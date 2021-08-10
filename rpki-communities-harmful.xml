@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+
+<?rfc sortrefs="yes"?>
+<?rfc subcompact="no"?>
+<?rfc symrefs="yes"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="3"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+
+<rfc
+   category="std"
+   docName="draft-spaghetti-grow-rpki-communities-harmful-00"
+   ipr="trust200902">
+  
+<front>
+
+<!-- sources:
+https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
+-->
+    
+  <title abbrev="RPKI States as BGP Communities Harmful">Grouping RPKI Origin Validation states as BGP Communities Considered Harmful</title>
+
+  <author fullname="Job Snijders" initials="J." surname="Snijders">
+    <organization>Fastly</organization>
+    <address>
+      <postal>
+        <street />
+        <city>Amsterdam</city>
+        <code />
+        <country>Netherlands</country>
+      </postal>
+      <email>job@fastly.com</email>
+    </address>
+  </author>
+
+  <date />
+
+  <abstract>
+
+    <t>
+      When RPKI Validation States are grouped as BGP communities, events such as expiration of Certificates or accidental termination of all RPKI-RTR sessions, cause needless BGP UPDATE messages to be flooded through the global Internet routing system.
+      The practise of grouping Resource Public Key Infrastructure (RPKI) Origin Validation states as Border Gateway Protocol (BGP) Communities is considered harmful.
+    </t>
+
+  </abstract>
+  
+</front>
+
+<middle>
+  
+  <section title="Introduction">
+
+    <t>
+
+      <xref target="RFC8097" /> describes a bad idea
+    </t>
+
+    <section title="Requirements Language">
+
+      <t>
+        The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+        NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+        "MAY", and "OPTIONAL" in this document are to be interpreted as
+        described in BCP 14 <xref format="default" pageno="false"
+        target="RFC2119"/> <xref format="default" pageno="false"
+        target="RFC8174"/> when, and only when, they appear in all
+        capitals, as shown here.
+      </t>
+
+    </section>
+
+  </section>
+
+  <section title="Do not do it">
+    <t>
+    </t>
+  </section>
+
+  <section title="Security Considerations">
+
+    <t>
+      Unintended consequences.
+      DFZ routers not equiped to handle churn in all directions at global scale.
+    </t>
+
+  </section>
+
+  <section title="IANA Considerations">
+
+    <t>
+      None.
+    </t>
+
+  </section>
+
+  <section title="Acknowledgements">
+
+    <t>
+      The authors would like to thank
+      ...
+      and
+      ...
+      for their helpful review of this document.
+    </t>
+
+  </section>
+
+</middle>
+
+<back>
+  <references title="Normative References">
+    <?rfc include="reference.RFC.2119.xml"?>
+    <?rfc include="reference.RFC.8097.xml"?>
+    <?rfc include="reference.RFC.8174.xml"?>
+  </references>
+
+<!--
+  <references title="Informative References">
+  </references>
+-->
+
+</back>
+
+</rfc>
