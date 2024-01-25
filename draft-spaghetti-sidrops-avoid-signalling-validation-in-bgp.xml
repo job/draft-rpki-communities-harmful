@@ -89,12 +89,20 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   </section>
 
   <section title="Negative Impact">
-    <section title="Scaling issues">
+    <section title="Likelihood of problems" anchor="outage">
       <t>
-        It is conceivable RPKI caches providing RTR service blip out of existence following local issues (<xref target="CVE-2021-3761"/>, <xref target="CVE-2021-41531"/>, <xref target="CVE-2021-43114"/>) or suddenly withdraw significant number of Validated Payloads following remote issues experienced by large Certification Authorities (CAs) (<xref target="CA-Outage1"/>, <xref target="CA-Outage2"/>, <xref target="CA-Outage3"/>, <xref target="CA-Outage4"/>).
+        RTR service provided by RPKI caches may blip out of existence following local issues (<xref target="CVE-2021-3761"/>, <xref target="CVE-2021-41531"/>, <xref target="CVE-2021-43114"/>) or suddenly withdraw significant number of Validated Payloads following remote issues experienced by large Certification Authorities (CAs) (<xref target="CA-Outage1"/>, <xref target="CA-Outage2"/>, <xref target="CA-Outage3"/>, <xref target="CA-Outage4"/>).
       </t>
       <t>
-        See <xref target="How-to-break"/> for an elaboration.
+        The above non-exhaustive listing suggests that issues in CA operations and RPKI cache implementations simply are unavoidable, thusly Operators MUST plan and design accordingly.
+      </t>
+    </section>
+
+    <section title="Scaling issues">
+      <t>
+        Following an RPKI service affecting <xref target="outage">outage</xref>, and considering roughly half the global Internet routing table nowadays is covered by RPKI ROAs <xref target="NIST"/>, any Autonomous System in which the local routing policy sets a BGP Community based on the ROV-Valid validation state, would need to send BGP UPDATE messages for roughly half the global Internet routing table if the validation state changes to ROV-NotFound.
+        This represents a significant burden.
+        See <xref target="How-to-break"/> for an elaboration on this phenomenon.
       </t>
     </section>
 
@@ -235,6 +243,16 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         <title>AFRINIC RPKI VRP graph for November 2023 - heavy fluctuations affecting 2 members</title>
         <author fullname="Job Snijders"/>
         <date month="November" year="2023"/>
+      </front>
+    </reference>
+
+    <reference anchor="NIST" target="https://rpki-monitor.antd.nist.gov/">
+      <front>
+        <title>NIST RPKI Monitor</title>
+        <author>
+          <organization>NIST</organization>
+        </author>
+        <date month="January" year="2024"/>
       </front>
     </reference>
 
