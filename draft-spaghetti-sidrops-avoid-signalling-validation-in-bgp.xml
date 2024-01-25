@@ -110,9 +110,10 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
     <section title="Route Age Reset">
       <t>
-        ...
+        Reference study from Max here?
       </t>
     </section>
+
   </section>
 
   <section title="Advantages of dissociate Validation states and BGP Path Attributes">
