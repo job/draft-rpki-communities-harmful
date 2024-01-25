@@ -1,10 +1,10 @@
-Grouping RPKI Origin Validation states as BGP Communities Considered Harmful
-============================================================================
+Guidance to Avoid Carrying RPKI Validation States in Transitive BGP Path Attributes
+===================================================================================
 
 Authoring Conventions
 ---------------------
 
-* One sentence per line, this makes diff viewing easiest.
+* One sentence per line, this makes git diff viewing easiest.
 * Only edit the .xml file (the .txt and .html files are computer generated).
 * Be sure to keep track of the names of contributors through the Acknowledgements section and the git log.
 
