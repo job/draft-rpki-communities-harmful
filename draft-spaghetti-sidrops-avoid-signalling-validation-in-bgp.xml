@@ -101,7 +101,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <section title="Scaling issues">
       <t>
         Following an RPKI service affecting <xref target="outage">outage</xref>, and considering roughly half the global Internet routing table nowadays is covered by RPKI ROAs <xref target="NIST"/>, any Autonomous System in which the local routing policy sets a BGP Community based on the ROV-Valid validation state, would need to send BGP UPDATE messages for roughly half the global Internet routing table if the validation state changes to ROV-NotFound.
-        This represents a significant burden.
+      </t>
+      <t>
+        As the global Internet routing table currently contains close to 1,000,000 prefixes <xref target="CIDR Report"/>, such convergence events represent a significant burden.
         See <xref target="How-to-break"/> for an elaboration on this phenomenon.
       </t>
     </section>
@@ -252,6 +254,14 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         <author>
           <organization>NIST</organization>
         </author>
+        <date month="January" year="2024"/>
+      </front>
+    </reference>
+
+    <reference anchor="CIDR Report" target="https://www.cidr-report.org/as2.0/">
+      <front>
+        <title>CIDR REPORT</title>
+        <author fullname="Geoff Huston"/>
         <date month="January" year="2024"/>
       </front>
     </reference>
