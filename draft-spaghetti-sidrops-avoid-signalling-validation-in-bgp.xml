@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+
+<?rfc sortrefs="yes"?>
+<?rfc subcompact="no"?>
+<?rfc symrefs="yes"?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="3"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+
+<rfc
+   xmlns:xi="http://www.w3.org/2001/XInclude"
+   category="bcp"
+   consensus="true"
+   submissionType="IETF"
+   docName="draft-spaghetti-sidrops-avoid-signalling-validation-in-bgp-00"
+   ipr="trust200902">
+<!-- For consideration: updates="7115" -->
+  
+<front>
+
+<!-- sources:
+https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
+-->
+    
+  <title abbrev="Avoid RPKI State in BGP">Guidance to Avoid Carrying RPKI Validation States in Transitive BGP Path Attributes</title>
+
+  <author fullname="Job Snijders" initials="J." surname="Snijders">
+    <organization>Fastly</organization>
+    <address>
+      <postal>
+        <street />
+        <city>Amsterdam</city>
+        <code />
+        <country>Netherlands</country>
+      </postal>
+      <email>job@fastly.com</email>
+    </address>
+  </author>
+
+  <author fullname="Tobias Fiebig" initials="T." surname="Fiebig">
+    <organization abbrev="MPI-INF">Max-Planck-Institut fuer Informatik</organization>
+    <address>
+      <postal>
+        <street>Campus E14</street>
+        <city>Saarbruecken</city>
+        <code>66123</code>
+        <country>Germany</country>
+      </postal>
+      <phone>+49 681 9325 3527</phone>
+      <email>tfiebig@mpi-inf.mpg.de</email>
+    </address>
+  </author>
+
+  <date />
+
+  <abstract>
+    <t>
+      This document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes.
+      Specifically, Operators are cautioned to avoid grouping BGP routes by their Prefix Origin Validation state into distinct BGP Communities.
+    </t>
+    <t>
+      In order to prevent needless BGP UPDATE messages from being flooded through the global Internet routing system, when, for example, Route Origin Authorizations are issued, revoked, or RPKI-To-Router sessions are terminated, Operators SHOULD ensure Validation States are not signalled in transitive BGP Path Attributes.
+    </t>
+  </abstract>
+  
+</front>
+
+<middle>
+  
+  <section title="Introduction">
+
+    <t>
+      This document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes <xref target="RFC4271" section="5"/>.
+      Specifically, Operators are cautioned to avoid grouping BGP routes by their Prefix Origin Validation state <xref target="RFC6811"/> into distinct BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/>.
+    </t>
+    <t>
+      In order to prevent needless BGP UPDATE messages from being flooded through the global Internet routing system, when, for example, Route Origin Authorizations <xref target="RFC6482"/> are issued, revoked, or RPKI-To-Router <xref target="RFC8210"/> sessions are terminated, Operators SHOULD ensure Validation States are not signalled in transitive BGP Path Attributes.
+    </t>
+
+    <section title="Requirements Language">
+
+      <t>
+        The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <xref format="default" pageno="false" target="RFC2119"/> <xref format="default" pageno="false" target="RFC8174"/> when, and only when, they appear in all capitals, as shown here.
+      </t>
+
+    </section>
+
+  </section>
+
+  <section title="Negative Impact">
+    <section title="Scaling issues">
+      <t>
+        It is conceivable RPKI caches providing RTR service blip out of existence following local issues (<xref target="CVE-2021-3761"/>, <xref target="CVE-2021-41531"/>, <xref target="CVE-2021-43114"/>) or suddenly withdraw significant number of Validated Payloads following remote issues experienced by large Certification Authorities (CAs) (<xref target="CA-Outage1"/>, <xref target="CA-Outage2"/>, <xref target="CA-Outage3"/>, <xref target="CA-Outage4"/>).
+      </t>
+      <t>
+        See <xref target="How-to-break"/> for an elaboration.
+      </t>
+    </section>
+
+    <section title="Route Age Reset">
+      <t>
+        ...
+      </t>
+    </section>
+  </section>
+
+  <section title="Advantages of dissociate Validation states and BGP Path Attributes">
+    <t>
+      Reduction of memory consumption on customer/peer facing PE routers (less BGP communities == less memory pressure).
+    </t>
+    <t>
+      No effect on the age of a BGP route when a ROA or ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/> is issued or revoked.
+    </t>
+    <t>
+      Avoid having to resend more than 500,000 BGP routes towards all BGP peers and customers on all routers if the RPKI cache crashes and RTR sessions are terminated.
+    </t>
+  </section>
+
+  <section title="Security Considerations">
+    <t>
+      DFZ routers may not be equiped to handle churn in all directions at global scale.
+    </t>
+    <t>
+      Validation state signaling SHOULD NOT be accepted from a neighbor AS, anyway.
+      The validation state of a received announcement has only local scope due to issues such as scope of trust and RPKI synchrony.
+    </t>
+  </section>
+
+  <section title="IANA Considerations">
+    <t>
+      None.
+    </t>
+  </section>
+
+  <section title="Acknowledgements">
+
+    <t>
+      The authors would like to thank
+      ...
+      and
+      ...
+      for their helpful review of this document.
+    </t>
+
+  </section>
+
+</middle>
+
+<back>
+  <references title="Normative References">
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+  </references>
+
+  <references title="Informative References">
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.1997.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4271.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6480.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6482.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6811.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8092.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8210.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-sidrops-aspa-profile.xml"/>
+
+    <reference anchor="How-to-break" target="https://cds.cern.ch/record/2805326">
+      <front>
+        <title>How to break the Internet: a talk about outages that never happened</title>
+        <author fullname="Job Snijders"/>
+        <date month="March" year="2022"/>
+      </front>
+      <refcontent>CERN Academic Training Lecture Regular Programme; 2021-2022</refcontent>
+    </reference>
+
+    <reference anchor="CVE-2021-3761" target="https://github.com/cloudflare/cfrpki/security/advisories/GHSA-c8xp-8mf3-62h9">
+      <front>
+        <title>OctoRPKI lacks contextual out-of-bounds check when validating RPKI ROA maxLength values</title>
+        <author>
+          <organization/>
+        </author>
+        <date month="September" year="2021"/>
+      </front>
+    </reference>
+
+    <reference anchor="CVE-2021-41531" target="https://www.nlnetlabs.nl/downloads/routinator/CVE-2021-41531.txt">
+      <front>
+        <title>Routinator prior to 0.10.0 produces invalid RTR payload if an RPKI CA uses too large values in the max-length parameter in a ROA</title>
+        <author>
+          <organization>NLnet Labs</organization>
+        </author>
+        <date month="September" year="2021"/>
+      </front>
+    </reference>
+
+    <reference anchor="CVE-2021-43114" target="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-43114">
+      <front>
+        <title>FORT Validator versions prior to 1.5.2 will crash if an RPKI CA publishes an X.509 EE certificate</title>
+        <author>
+          <organization>FORT project</organization>
+        </author>
+        <date month="November" year="2021"/>
+      </front>
+    </reference>
+
+    <reference anchor="CA-Outage1" target="https://www.arin.net/announcements/20200813/">
+      <front>
+        <title>RPKI Service Notice Update</title>
+        <author>
+          <organization>ARIN</organization>
+        </author>
+        <date month="August" year="2020"/>
+      </front>
+    </reference>
+
+    <reference anchor="CA-Outage2" target="https://www.ripe.net/ripe/mail/archives/routing-wg/2021-April/004314.html">
+      <front>
+        <title>Issue affecting rsync RPKI repository fetching</title>
+        <author>
+          <organization>RIPE NCC</organization>
+        </author>
+        <date month="April" year="2021"/>
+      </front>
+    </reference>
+
+    <reference anchor="CA-Outage3" target="https://mail.lacnic.net/pipermail/lacnog/2023-April/009471.html">
+      <front>
+        <title>problemas con el TA de RPKI de LACNIC</title>
+        <author fullname="Job Snijders"/>
+        <date month="April" year="2023"/>
+      </front>
+    </reference>
+
+    <reference anchor="CA-Outage4" target="https://lists.afrinic.net/pipermail/dbwg/2023-November/000493.html">
+      <front>
+        <title>AFRINIC RPKI VRP graph for November 2023 - heavy fluctuations affecting 2 members</title>
+        <author fullname="Job Snijders"/>
+        <date month="November" year="2023"/>
+      </front>
+    </reference>
+
+  </references>
+
+</back>
+
+</rfc>
