@@ -1,4 +1,4 @@
-NAME=draft-spaghetti-sidrops-avoid-signalling-validation-in-bgp
+NAME=draft-spaghetti-sidrops-avoid-signaling-validation-in-bgp
 
 all: $(NAME).xml
 	xml2rfc $(NAME).xml --html --text
