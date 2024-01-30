@@ -51,7 +51,17 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <email>tfiebig@mpi-inf.mpg.de</email>
     </address>
   </author>
-
+  
+  <author fullname="Massimiliano Stucchi" initials="M. A." surname="Stucchi">
+    <organization>AS58280.net</organization>
+    <address>
+      <postal>
+        <city>Bruettisellen</city>
+        <country>Switzerland</country>
+      </postal>
+      <email>max@stucchi.ch</email>
+    </address>
+  </author>
   <date />
 
   <abstract>
@@ -110,7 +120,10 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
     <section title="Observed data">
       <t>
-        Reference study from Max here?
+        In January 2023, a data-gathering initiative (link to come) reported that between 8% and 10% of BGP updates seen on the Routing Information Service - RIS, contained well-known communities from large ISPs signalling either ROV-NotFound or ROV-Valid BGP Validation states.  The study also demonstrated that the creation or removal of a ROA object triggered a chain of updates in a period of circa 1 hour following the change.
+      </t>
+      <t>
+        Such a high percentage of unneeded BGP updates constitutes a considerable level of noise, impacting the capacity of the global routing system while generating load on router CPUs and occupying more RAM than necessary.  Keeping this information inside the realms of the single autonomous system would help reduce the burden on the rest of the global routing platform, reducing workload and noise.
       </t>
     </section>
 
