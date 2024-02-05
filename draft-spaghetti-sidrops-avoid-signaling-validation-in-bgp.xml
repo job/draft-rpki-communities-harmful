@@ -107,7 +107,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   </section>
 
-  <section title="Risks of Signaling Validation State With Transitive Attributes">
+  <section title="Risks of Signaling Validation State With Transitive Attributes" anchor="signalling-risks">
     <t>
       This section outlines the risks of signalling RPKI Validation State using BGP Communities.
       While the current description is specific to BGP communities, the observations hold similar for all transitive attributes that may be added to a route.
@@ -229,15 +229,24 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   </section>
 
-  <section title="Advantages of dissociate Validation states and BGP Path Attributes">
+  <section title="Advantages of Dissociating Validation States and BGP Path Attributes">
     <t>
-      Reduction of memory consumption on customer/peer facing PE routers (less BGP communities == less memory pressure).
+      As outlined in <xref target="signalling-risks"/>, signalling validation state with transitive attributes carries significant risks for the stability of the global routing ecosystem.
+      Not signalling validation state, hence, has tangible benefits, specifically:
     </t>
+    <ul spacing="normal">
+      <li>
+        Reduction of memory consumption on customer/peer facing PE routers (less BGP communities == less memory pressure).
+      </li>
+      <li>
+        No effect on the age of a BGP route when a ROA or ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/> is issued or revoked.
+      </li>
+      <li>
+        Avoids having to resend, e.g., more than 500,000 BGP routes towards BGP neighbors (for the own cone to peers and upstreams, for the full table towards customers) if the RPKI cache crashes and RTR sessions are terminated, or if flaps in validation are caused by other events.
+      </li>
+    </ul>
     <t>
-      No effect on the age of a BGP route when a ROA or ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/> is issued or revoked.
-    </t>
-    <t>
-      Avoid having to resend more than 500,000 BGP routes towards all BGP peers and customers on all routers if the RPKI cache crashes and RTR sessions are terminated.
+      Hence, operators <bcp14>SHOULD NOT</bcp14> signal RPKI validation state using transitive BGP attributes.
     </t>
   </section>
 
