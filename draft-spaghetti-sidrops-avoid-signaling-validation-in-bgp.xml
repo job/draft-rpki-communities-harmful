@@ -107,13 +107,73 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   </section>
 
-  <section title="Negative Impact">
-    <section title="Likelihood of problems" anchor="outage">
+  <section title="Risks of Signaling Validation State With Transitive Attributes">
+    <t>
+      This section outlines the risks of signalling RPKI Validation State using BGP Communities.
+      While the current description is specific to BGP communities, the observations hold similar for all transitive attributes that may be added to a route.
+      Furthermore, we will present data on the measured current impact of BGP Communities being used to signal RPKI Validation state.
+    </t>
+    <section title="Triggers for Large-Scale Validation Changes" anchor="outage">
       <t>
-        RTR service provided by RPKI caches may blip out of existence following local issues (<xref target="CVE-2021-3761"/>, <xref target="CVE-2021-41531"/>, <xref target="CVE-2021-43114"/>) or suddenly withdraw significant number of Validated Payloads following remote issues experienced by large Certification Authorities (CAs) (<xref target="CA-Outage1"/>, <xref target="CA-Outage2"/>, <xref target="CA-Outage3"/>, <xref target="CA-Outage4"/>).
+        Here, we describe examples for how a large amount of RPKI ROV changes may occur in a short time, leading to a large amount of BGP Updates being send.
       </t>
+      <section title="ROA Issuance" anchor="outage-roa-issuance">
+        <t>
+          Large-Scale ROA issuance should be a comparatively rare event for individual networks.
+          However, several cases exist where issuance by individual operators or (malicious) coordinated issuance of ROAs by multiple operators may lead to a high churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI validation state.
+        </t>
+        <t>
+          Specifically:
+        </t>
+        <ul spacing="normal">
+          <li>
+            When one large operator newly starts issuing ROAs for their netblocks, for example, when migrating to minimally covering ROAs <xref target="RFC9319"/>, or when issuing one ROA with a long maxLength covering a large number of prefixes.
+          </li>
+          <li>
+            When multiple smaller operators coordinate to issue new ROAs at the same time.
+          </li>
+          <li>
+            When a CA has been unavailable or unable to publish for some time, but then publishes all updates at once, or--as unlikely as it is--if a key-rollover encounters issues.
+          </li>
+        </ul>
+      </section>
+      <section title="ROA Revocation" anchor="outage-roa-revocation">
+        <t>
+          Large-Scale ROA issuance should be a comparatively rare event for individual networks.
+          However, several cases exist where revocations by individual operators or (malicious) coordinated revocation of ROAs by multiple operators may lead to a high churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI validation state.
+        </t>
+        <t>
+          Specifically:
+        </t>
+        <ul spacing="normal">
+          <li>
+            When one large operator revokes all ROAs for their netblocks at once, for example, when migrating to minimally covering ROAs <xref target="RFC9319"/>, or when revoking one ROA with a long maxLength covering a large number of prefixes.
+          </li>
+          <li>
+            When multiple smaller operators coordinate to revoke ROAs at the same time.
+          </li>
+          <li>
+            When a CA becomes unavailable or unable to publish for some time, e.g., due to the CA expiring (<xref target="CA-Outage1"/>, <xref target="CA-Outage2"/>, <xref target="CA-Outage3"/>, <xref target="CA-Outage4"/>).
+          </li>
+        </ul>
+      </section>
+      <section title="Validator Loss" anchor="outage-validator-loss">
+        <t>
+          Similar to the issuance/revocation of routes, the validation pipeline of an operator may encounter issues.
+          For example, any of the following events may lead to RTR services used by an operator no longer providing validation state to routers, leading to routes changing from VALID to UNKNOWN:
+        </t>
+        <ul spacing="normal">
+          <li>
+            The RTR service may have to be taken offline due to local issues (<xref target="CVE-2021-3761"/>, <xref target="CVE-2021-41531"/>, <xref target="CVE-2021-43114"/>), or, even worse, a misconfiguration may lead to the service flapping, e.g., when the system runs out of memory after a few minutes of communicating validation state to routers.
+          </li>
+          <li>
+            Multiple operators use one central RTR service hosted by an external party, or depend on a similar validator, which becomes unavailable, e.g., due to maintenance or an outage, and local instances are not able to handle loss of this external service without changing validation state, i.e., do not serve from cache.
+          </li>
+        </ul>
+      </section>
       <t>
-        The above non-exhaustive listing suggests that issues in CA operations and RPKI cache implementations simply are unavoidable, thusly Operators MUST plan and design accordingly.
+        The above non-exhaustive listing suggests that issues in general operations, CA operations, and RPKI cache implementations simply are unavoidable.
+        Hence, Operators <bcp14>MUST</bcp14> plan and design accordingly.
       </t>
     </section>
 
@@ -125,6 +185,19 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <t>
         As the global Internet routing table currently contains close to 1,000,000 prefixes <xref target="CIDR Report"/>, such convergence events represent a significant burden.
         See <xref target="How-to-break"/> for an elaboration on this phenomenon.
+      </t>
+      <t>
+        Furthermore, adding additional attributes to routes increases their size and memory consumption in the RIB of BGP routers.
+        Given the continuous growth of the global routing table, operators should be--in general--conservative regarding the additional information they add to routes.
+      </t>
+    </section>
+
+    <section title="Cascading of BGP UPDATES" anchor="cascade">
+      <t>
+        The aforementioned issues that may lead to changes in validation state for a large number of routes are not confined to singular UPDATE events.
+        Instead, given that routers' view of the RPKI with RTR is only eventually consistent, update messages may cascade, i.e., one change in validation state may actually trigger multiple subsequent BGP UPDATE storms.
+        If, for example, AS65536 is a downstream of AS65537 (both annotating validation state with BGP Communities), and a major CA fails, but AS65537 has their validator's cache updated before AS65536, AS65536 will first receive updates for all formerly valid routes learned from AS65537 when validation state changes there, and propagate these down its cone.
+        Then, when the cache of AS65536 is updated as well, the community of AS65536 will again change for these routes, while also being propagated down the cone again.
       </t>
     </section>
 
@@ -197,6 +270,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6811.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8092.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8210.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9319.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-sidrops-aspa-profile.xml"/>
 
     <reference anchor="How-to-break" target="https://cds.cern.ch/record/2805326">
