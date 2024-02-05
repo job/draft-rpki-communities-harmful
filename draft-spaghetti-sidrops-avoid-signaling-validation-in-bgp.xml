@@ -139,7 +139,8 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         </t>
         <ul spacing="normal">
           <li>
-            When one large operator newly starts issuing ROAs for their netblocks, for example, when migrating to minimally covering ROAs <xref target="RFC9319"/>, or when issuing one ROA with a long maxLength covering a large number of prefixes.
+            When one large operator newly starts issuing ROAs for their netblocks, possibly by issuing one ROA with a long maxLength covering a large number of prefixes.
+            This may also occur when incorrectly migrating migrating to minimally covering ROAs <xref target="RFC9319"/>, i.e., when the previous ROA is first revoked (see <xref target="outage-roa-revocation"/>) and the new ROAs are only issued after this revocation has been propagated, e.g., due to an operational error or bug in the issuance pipeline used by the operator.
           </li>
           <li>
             When multiple smaller operators coordinate to issue new ROAs at the same time.
