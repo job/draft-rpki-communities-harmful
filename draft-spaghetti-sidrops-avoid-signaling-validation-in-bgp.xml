@@ -211,6 +211,21 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         Keeping this information inside the realms of the single autonomous system would help reduce the burden on the rest of the global routing platform, reducing workload and noise.
       </t>
     </section>
+    <section title="Lacking Value of Signaling Validation State">
+      <t>
+        RTR has been developped to communicate validation information to routers.
+        BGP Attributes are not signed, and provide no assurance against third parties adding them, apart from BGP communities--ideally--being filtered at a networks edge.
+        So, even in iBGP scenarios, their benefit in comparison to using RTR on all BGP speakers is limited.
+      </t>
+      <t>
+        For eBGP, given they are not signed, they provide even less information to other parties except introspection into an ASes internal validation mechanics.
+        Crucially, they provide no actionable information for BGP neighbors.
+        If an AS validates and enforces based on RPKI, INVALID routes should never be imported and, hence, never be send to neighbors.
+        Hence, the argument that adding validation state to communities enables, e.g., downstreams to filter RPKI INVALID routes is mute, as the only routes a downstream should see are UNKNOWN and VALID.
+        Furthermore, in any case, the operators <bcp14>SHOULD</bcp14> run their own validation infrastructure and not rely on centralized services or attributes communicated by their neighbors.
+        Everything else circumvents the purpose of RPKI.
+      </t>
+    </section>
 
   </section>
 
