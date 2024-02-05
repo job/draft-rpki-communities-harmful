@@ -243,11 +243,13 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   <section title="Security Considerations">
     <t>
-      DFZ routers may not be equiped to handle churn in all directions at global scale.
+      The use of transitive attributes to signal RPKI validation state may enable attackers to cause notable route churn by issuing and widthdrawing, e.g., ROAs for their prefixes.
+      DFZ routers may not be equiped to handle churn in all directions at global scale, especially if said churn cascades or repeats periodically.
     </t>
     <t>
-      Validation state signaling SHOULD NOT be accepted from a neighbor AS, anyway.
-      The validation state of a received announcement has only local scope due to issues such as scope of trust and RPKI synchrony.
+      To prevent this, operators <bcp14>SHOULD NOT</bcp14> signal validation state to neighbors.
+      Furthermore, validation state signaling <bcp14>SHOULD NOT</bcp14> be accepted from a neighbor AS.
+      Instead, the validation state of a received announcement has only local scope due to issues such as scope of trust and RPKI synchrony.
     </t>
   </section>
 
