@@ -107,6 +107,18 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   </section>
 
+  <section title="Scope" anchor="scope">
+    <t>
+      This document discusses signalling of RPKI validation state to BGP neighbors using transitive BGP attributes.
+      At the time of writing, this pertains to the use of BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/> to signal RPKI ROV using ROAs.
+      Note that this includes all operator specific BGP Communities to signal validation state, as well as any current or future documented well-known BGP Communities marking validation state, as, e.g., described for extended BGP Communities in <xref target="RFC8097"/>.
+    <t>
+    </t>
+      However, beyond that, this document also applies to all current and future transitive BGP attributes that may be implicitly or explicitly used to signal validation state to neighbors.
+      Similarly, it applies to all future validation mechanics of RPKI, e.g., ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/> and any other future validation mechanic build upon the RPKI.
+    </t>
+  </section>
+
   <section title="Risks of Signaling Validation State With Transitive Attributes" anchor="signalling-risks">
     <t>
       This section outlines the risks of signalling RPKI Validation State using BGP Communities.
@@ -298,6 +310,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6482.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6811.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8092.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8097.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8210.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9319.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-sidrops-aspa-profile.xml"/>
