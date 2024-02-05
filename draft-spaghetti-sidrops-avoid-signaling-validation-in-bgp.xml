@@ -186,10 +186,12 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
           </li>
         </ul>
       </section>
-      <t>
-        The above non-exhaustive listing suggests that issues in general operations, CA operations, and RPKI cache implementations simply are unavoidable.
-        Hence, Operators <bcp14>MUST</bcp14> plan and design accordingly.
-      </t>
+      <section title="Outage Scenario Summary" anchor="outage-summary">
+        <t>
+          The above non-exhaustive listing suggests that issues in general operations, CA operations, and RPKI cache implementations simply are unavoidable.
+          Hence, Operators <bcp14>MUST</bcp14> plan and design accordingly.
+        </t>
+      </section>
     </section>
 
     <section title="Scaling issues">
