@@ -67,10 +67,11 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <abstract>
     <t>
       This document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes.
-      Specifically, Operators are cautioned to avoid grouping BGP routes by their Prefix Origin Validation state into distinct BGP Communities.
+      Annotating routes with attributes signalling validation state may flood needless BGP UPDATE messages through the global Internet routing system, when, for example, Route Origin Authorizations are issued, revoked, or RPKI-To-Router sessions are terminated.
     </t>
     <t>
-      In order to prevent needless BGP UPDATE messages from being flooded through the global Internet routing system, when, for example, Route Origin Authorizations are issued, revoked, or RPKI-To-Router sessions are terminated, Operators SHOULD ensure Validation States are not signalled in transitive BGP Path Attributes.
+      Operators <bcp14>SHOULD</bcp14> ensure Validation States are not signalled in transitive BGP Path Attributes.
+      Specifically, Operators <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state into distinct BGP Communities.
     </t>
   </abstract>
   
@@ -81,11 +82,19 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <section title="Introduction">
 
     <t>
-      This document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes <xref target="RFC4271" section="5"/>.
-      Specifically, Operators are cautioned to avoid grouping BGP routes by their Prefix Origin Validation state <xref target="RFC6811"/> into distinct BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/>.
+      The Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> allows for validating received routes, e.g., for their Route Origin Validation (ROV) state.
+      Some operators and vendors suggest to use distinct BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/> to annotate received routes with their validations state.
+      The claim is that this practice is useful, as validation state can be signalled, e.g., to iBGP speakers, without requirering each iBGP speaker to perform their own route origin validation.
     </t>
     <t>
-      In order to prevent needless BGP UPDATE messages from being flooded through the global Internet routing system, when, for example, Route Origin Authorizations <xref target="RFC6482"/> are issued, revoked, or RPKI-To-Router <xref target="RFC8210"/> sessions are terminated, Operators SHOULD ensure Validation States are not signalled in transitive BGP Path Attributes.
+      However, annotating a route with a transitive attribute means that a BGP update message has to be send to each neighbor if such an attribute changes.
+      This means that when, for example, Route Origin Authorizations <xref target="RFC6482"/> are issued, revoked, or RPKI-To-Router <xref target="RFC8210"/> sessions are terminated, a BGP UPDATE message will be sent for a route that was previously annotated with a BGP Community.
+      Furthermore, given that BGP Communities are a transitive attribute, this BGP UPDATE will have to propagate through the whole default free zone (DFZ).
+    </t>
+    <t>
+      Hence, this document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes <xref target="RFC4271" section="5"/>.
+      Specifically, Operators are <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state <xref target="RFC6811"/> into distinct BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/>.
+      Not using BGP Communities to signal RPKI validation state prevent needless BGP UPDATE messages from being flooded through the global Internet routing system.
     </t>
 
     <section title="Requirements Language">
@@ -98,14 +107,91 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   </section>
 
-  <section title="Negative Impact">
-    <section title="Likelihood of problems" anchor="outage">
+  <section title="Scope" anchor="scope">
+    <t>
+      This document discusses signalling of RPKI validation state to BGP neighbors using transitive BGP attributes.
+      At the time of writing, this pertains to the use of BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/> to signal RPKI ROV using ROAs.
+      Note that this includes all operator specific BGP Communities to signal validation state, as well as any current or future documented well-known BGP Communities marking validation state, as, e.g., described for extended BGP Communities in <xref target="RFC8097"/>.
+    <t>
+    </t>
+      However, beyond that, this document also applies to all current and future transitive BGP attributes that may be implicitly or explicitly used to signal validation state to neighbors.
+      Similarly, it applies to all future validation mechanics of RPKI, e.g., ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/> and any other future validation mechanic build upon the RPKI.
+    </t>
+  </section>
+
+  <section title="Risks of Signaling Validation State With Transitive Attributes" anchor="signalling-risks">
+    <t>
+      This section outlines the risks of signalling RPKI Validation State using BGP Communities.
+      While the current description is specific to BGP communities, the observations hold similar for all transitive attributes that may be added to a route.
+      Furthermore, we will present data on the measured current impact of BGP Communities being used to signal RPKI Validation state.
+    </t>
+    <section title="Triggers for Large-Scale Validation Changes" anchor="outage">
       <t>
-        RTR service provided by RPKI caches may blip out of existence following local issues (<xref target="CVE-2021-3761"/>, <xref target="CVE-2021-41531"/>, <xref target="CVE-2021-43114"/>) or suddenly withdraw significant number of Validated Payloads following remote issues experienced by large Certification Authorities (CAs) (<xref target="CA-Outage1"/>, <xref target="CA-Outage2"/>, <xref target="CA-Outage3"/>, <xref target="CA-Outage4"/>).
+        Here, we describe examples for how a large amount of RPKI ROV changes may occur in a short time, leading to a large amount of BGP Updates being send.
       </t>
-      <t>
-        The above non-exhaustive listing suggests that issues in CA operations and RPKI cache implementations simply are unavoidable, thusly Operators MUST plan and design accordingly.
-      </t>
+      <section title="ROA Issuance" anchor="outage-roa-issuance">
+        <t>
+          Large-Scale ROA issuance should be a comparatively rare event for individual networks.
+          However, several cases exist where issuance by individual operators or (malicious) coordinated issuance of ROAs by multiple operators may lead to a high churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI validation state.
+        </t>
+        <t>
+          Specifically:
+        </t>
+        <ul spacing="normal">
+          <li>
+            When one large operator newly starts issuing ROAs for their netblocks, for example, when migrating to minimally covering ROAs <xref target="RFC9319"/>, or when issuing one ROA with a long maxLength covering a large number of prefixes.
+          </li>
+          <li>
+            When multiple smaller operators coordinate to issue new ROAs at the same time.
+          </li>
+          <li>
+            When a CA has been unavailable or unable to publish for some time, but then publishes all updates at once, or--as unlikely as it is--if a key-rollover encounters issues.
+          </li>
+        </ul>
+      </section>
+      <section title="ROA Revocation" anchor="outage-roa-revocation">
+        <t>
+          Large-Scale ROA issuance should be a comparatively rare event for individual networks.
+          However, several cases exist where revocations by individual operators or (malicious) coordinated revocation of ROAs by multiple operators may lead to a high churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI validation state.
+        </t>
+        <t>
+          Specifically:
+        </t>
+        <ul spacing="normal">
+          <li>
+            When one large operator revokes all ROAs for their netblocks at once, for example, when migrating to minimally covering ROAs <xref target="RFC9319"/>, or when revoking one ROA with a long maxLength covering a large number of prefixes.
+          </li>
+          <li>
+            When multiple smaller operators coordinate to revoke ROAs at the same time.
+          </li>
+          <li>
+            When a CA becomes unavailable or unable to publish for some time, e.g., due to the CA expiring (<xref target="CA-Outage1"/>, <xref target="CA-Outage2"/>, <xref target="CA-Outage3"/>, <xref target="CA-Outage4"/>).
+          </li>
+        </ul>
+      </section>
+      <section title="Validator Loss" anchor="outage-validator-loss">
+        <t>
+          Similar to the issuance/revocation of routes, the validation pipeline of an operator may encounter issues.
+          For example, any of the following events may lead to RTR services used by an operator no longer providing validation state to routers, leading to routes changing from VALID to UNKNOWN:
+        </t>
+        <ul spacing="normal">
+          <li>
+            The RTR service may have to be taken offline due to local issues (<xref target="CVE-2021-3761"/>, <xref target="CVE-2021-41531"/>, <xref target="CVE-2021-43114"/>), or, even worse, a misconfiguration may lead to the service flapping, e.g., when the system runs out of memory after a few minutes of communicating validation state to routers.
+          </li>
+          <li>
+            Validation state may seemingly lapse due to issues with time syncronization if, e.g., the clock of the validator diverts significantly, starting to consider CA's certificates invalid.
+          </li>
+          <li>
+            Multiple operators use one central RTR service hosted by an external party, or depend on a similar validator, which becomes unavailable, e.g., due to maintenance or an outage, and local instances are not able to handle loss of this external service without changing validation state, i.e., do not serve from cache.
+          </li>
+        </ul>
+      </section>
+      <section title="Outage Scenario Summary" anchor="outage-summary">
+        <t>
+          The above non-exhaustive listing suggests that issues in general operations, CA operations, and RPKI cache implementations simply are unavoidable.
+          Hence, Operators <bcp14>MUST</bcp14> plan and design accordingly.
+        </t>
+      </section>
     </section>
 
     <section title="Scaling issues">
@@ -116,6 +202,19 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <t>
         As the global Internet routing table currently contains close to 1,000,000 prefixes <xref target="CIDR Report"/>, such convergence events represent a significant burden.
         See <xref target="How-to-break"/> for an elaboration on this phenomenon.
+      </t>
+      <t>
+        Furthermore, adding additional attributes to routes increases their size and memory consumption in the RIB of BGP routers.
+        Given the continuous growth of the global routing table, operators should be--in general--conservative regarding the additional information they add to routes.
+      </t>
+    </section>
+
+    <section title="Cascading of BGP UPDATES" anchor="cascade">
+      <t>
+        The aforementioned issues that may lead to changes in validation state for a large number of routes are not confined to singular UPDATE events.
+        Instead, given that routers' view of the RPKI with RTR is only eventually consistent, update messages may cascade, i.e., one change in validation state may actually trigger multiple subsequent BGP UPDATE storms.
+        If, for example, AS65536 is a downstream of AS65537 (both annotating validation state with BGP Communities), and a major CA fails, but AS65537 has their validator's cache updated before AS65536, AS65536 will first receive updates for all formerly valid routes learned from AS65537 when validation state changes there, and propagate these down its cone.
+        Then, when the cache of AS65536 is updated as well, the community of AS65536 will again change for these routes, while also being propagated down the cone again.
       </t>
     </section>
 
@@ -129,28 +228,54 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         Keeping this information inside the realms of the single autonomous system would help reduce the burden on the rest of the global routing platform, reducing workload and noise.
       </t>
     </section>
+    <section title="Lacking Value of Signaling Validation State">
+      <t>
+        RTR has been developped to communicate validation information to routers.
+        BGP Attributes are not signed, and provide no assurance against third parties adding them, apart from BGP communities--ideally--being filtered at a networks edge.
+        So, even in iBGP scenarios, their benefit in comparison to using RTR on all BGP speakers is limited.
+      </t>
+      <t>
+        For eBGP, given they are not signed, they provide even less information to other parties except introspection into an ASes internal validation mechanics.
+        Crucially, they provide no actionable information for BGP neighbors.
+        If an AS validates and enforces based on RPKI, INVALID routes should never be imported and, hence, never be send to neighbors.
+        Hence, the argument that adding validation state to communities enables, e.g., downstreams to filter RPKI INVALID routes is mute, as the only routes a downstream should see are UNKNOWN and VALID.
+        Furthermore, in any case, the operators <bcp14>SHOULD</bcp14> run their own validation infrastructure and not rely on centralized services or attributes communicated by their neighbors.
+        Everything else circumvents the purpose of RPKI.
+      </t>
+    </section>
 
   </section>
 
-  <section title="Advantages of dissociate Validation states and BGP Path Attributes">
+  <section title="Advantages of Dissociating Validation States and BGP Path Attributes">
     <t>
-      Reduction of memory consumption on customer/peer facing PE routers (less BGP communities == less memory pressure).
+      As outlined in <xref target="signalling-risks"/>, signalling validation state with transitive attributes carries significant risks for the stability of the global routing ecosystem.
+      Not signalling validation state, hence, has tangible benefits, specifically:
     </t>
+    <ul spacing="normal">
+      <li>
+        Reduction of memory consumption on customer/peer facing PE routers (less BGP communities == less memory pressure).
+      </li>
+      <li>
+        No effect on the age of a BGP route when a ROA or ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/> is issued or revoked.
+      </li>
+      <li>
+        Avoids having to resend, e.g., more than 500,000 BGP routes towards BGP neighbors (for the own cone to peers and upstreams, for the full table towards customers) if the RPKI cache crashes and RTR sessions are terminated, or if flaps in validation are caused by other events.
+      </li>
+    </ul>
     <t>
-      No effect on the age of a BGP route when a ROA or ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/> is issued or revoked.
-    </t>
-    <t>
-      Avoid having to resend more than 500,000 BGP routes towards all BGP peers and customers on all routers if the RPKI cache crashes and RTR sessions are terminated.
+      Hence, operators <bcp14>SHOULD NOT</bcp14> signal RPKI validation state using transitive BGP attributes.
     </t>
   </section>
 
   <section title="Security Considerations">
     <t>
-      DFZ routers may not be equiped to handle churn in all directions at global scale.
+      The use of transitive attributes to signal RPKI validation state may enable attackers to cause notable route churn by issuing and widthdrawing, e.g., ROAs for their prefixes.
+      DFZ routers may not be equiped to handle churn in all directions at global scale, especially if said churn cascades or repeats periodically.
     </t>
     <t>
-      Validation state signaling SHOULD NOT be accepted from a neighbor AS, anyway.
-      The validation state of a received announcement has only local scope due to issues such as scope of trust and RPKI synchrony.
+      To prevent this, operators <bcp14>SHOULD NOT</bcp14> signal validation state to neighbors.
+      Furthermore, validation state signaling <bcp14>SHOULD NOT</bcp14> be accepted from a neighbor AS.
+      Instead, the validation state of a received announcement has only local scope due to issues such as scope of trust and RPKI synchrony.
     </t>
   </section>
 
@@ -187,7 +312,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6482.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6811.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8092.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8097.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8210.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9319.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-sidrops-aspa-profile.xml"/>
 
     <reference anchor="How-to-break" target="https://cds.cern.ch/record/2805326">
