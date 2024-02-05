@@ -140,7 +140,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         <ul spacing="normal">
           <li>
             When one large operator newly starts issuing ROAs for their netblocks, possibly by issuing one ROA with a long maxLength covering a large number of prefixes.
-            This may also occur when incorrectly migrating migrating to minimally covering ROAs <xref target="RFC9319"/>, i.e., when the previous ROA is first revoked (see <xref target="outage-roa-revocation"/>) and the new ROAs are only issued after this revocation has been propagated, e.g., due to an operational error or bug in the issuance pipeline used by the operator.
+            This may also occur when incorrectly migrating to minimally covering ROAs <xref target="RFC9319"/>, i.e., when the previous ROA is first revoked (see <xref target="outage-roa-revocation"/>) and the new ROAs are only issued after this revocation has been propagated, e.g., due to an operational error or bug in the issuance pipeline used by the operator.
           </li>
           <li>
             When multiple smaller operators coordinate to issue new ROAs at the same time.
@@ -152,7 +152,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       </section>
       <section title="ROA Revocation" anchor="outage-roa-revocation">
         <t>
-          Large-Scale ROA issuance should be a comparatively rare event for individual networks.
+          Large-Scale ROA revocation should be a comparatively rare event for individual networks.
           However, several cases exist where revocations by individual operators or (malicious) coordinated revocation of ROAs by multiple operators may lead to a high churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI validation state.
         </t>
         <t>
