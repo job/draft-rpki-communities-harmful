@@ -70,7 +70,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       Annotating routes with attributes signalling validation state may flood needless BGP UPDATE messages through the global Internet routing system, when, for example, Route Origin Authorizations are issued, revoked, or RPKI-To-Router sessions are terminated.
     </t>
     <t>
-      Operators SHOULD ensure Validation States are not signalled in transitive BGP Path Attributes.
+      Operators <bcp14>SHOULD</bcp14> ensure Validation States are not signalled in transitive BGP Path Attributes.
       Specifically, Operators <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state into distinct BGP Communities.
     </t>
   </abstract>
@@ -82,11 +82,19 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <section title="Introduction">
 
     <t>
-      This document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes <xref target="RFC4271" section="5"/>.
-      Specifically, Operators are cautioned to avoid grouping BGP routes by their Prefix Origin Validation state <xref target="RFC6811"/> into distinct BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/>.
+      The Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> allows for validating received routes, e.g., for their Route Origin Validation (ROV) state.
+      Some operators and vendors suggest to use distinct BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/> to annotate received routes with their validations state.
+      The claim is that this practice is useful, as validation state can be signalled, e.g., to iBGP speakers, without requirering each iBGP speaker to perform their own route origin validation.
     </t>
     <t>
-      In order to prevent needless BGP UPDATE messages from being flooded through the global Internet routing system, when, for example, Route Origin Authorizations <xref target="RFC6482"/> are issued, revoked, or RPKI-To-Router <xref target="RFC8210"/> sessions are terminated, Operators SHOULD ensure Validation States are not signalled in transitive BGP Path Attributes.
+      However, annotating a route with a transitive attribute means that a BGP update message has to be send to each neighbor if such an attribute changes.
+      This means that when, for example, Route Origin Authorizations <xref target="RFC6482"/> are issued, revoked, or RPKI-To-Router <xref target="RFC8210"/> sessions are terminated, a BGP UPDATE message will be sent for a route that was previously annotated with a BGP Community.
+      Furthermore, given that BGP Communities are a transitive attribute, this BGP UPDATE will have to propagate through the whole default free zone (DFZ).
+    </t>
+    <t>
+      Hence, this document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes <xref target="RFC4271" section="5"/>.
+      Specifically, Operators are <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state <xref target="RFC6811"/> into distinct BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/>.
+      Not using BGP Communities to signal RPKI validation state prevent needless BGP UPDATE messages from being flooded through the global Internet routing system.
     </t>
 
     <section title="Requirements Language">
