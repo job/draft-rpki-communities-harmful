@@ -221,7 +221,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
     <section title="Observed data">
       <t>
-        In January 2024, a data-gathering initiative (link to come) reported that between 8% and 10% of BGP updates seen on the Routing Information Service - RIS, contained well-known communities from large ISPs signalling either ROV-NotFound or ROV-Valid BGP Validation states.
+        In February 2024, a data-gathering initiative <xref target="Side-Effect"/> reported that between 8% and 10% of BGP updates seen on the Routing Information Service - RIS, contained well-known communities from large ISPs signalling either ROV-NotFound or ROV-Valid BGP Validation states.
         The study also demonstrated that the creation or removal of a ROA object triggered a chain of updates in a period of circa 1 hour following the change.
       </t>
       <t>
@@ -400,6 +400,14 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
           <organization>NIST</organization>
         </author>
         <date month="January" year="2024"/>
+      </front>
+    </reference>
+
+    <reference anchor="Side-Effect" target="https://labs.ripe.net/author/stucchimax/a-bgp-side-effect-of-rpki/">
+      <front>
+        <title>A BGP Side Effect of RPKI</title>
+        <author fullname="Massimiliano Stucchi"/>
+        <date month="February" year="2024"/>
       </front>
     </reference>
 
