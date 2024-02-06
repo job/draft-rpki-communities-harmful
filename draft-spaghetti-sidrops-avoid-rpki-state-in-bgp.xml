@@ -84,7 +84,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <t>
       The Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> allows for validating received routes, e.g., for their Route Origin Validation (ROV) state.
       Some operators and vendors suggest to use distinct BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/> to annotate received routes with their validations state.
-      The claim is that this practice is useful, as validation state can be signalled, e.g., to iBGP speakers, without requirering each iBGP speaker to perform their own route origin validation.
+      The claim is that this practice is useful, as validation state can be signalled, e.g., to iBGP speakers, without requiring each iBGP speaker to perform their own route origin validation.
     </t>
     <t>
       However, annotating a route with a transitive attribute means that a BGP update message has to be send to each neighbor if such an attribute changes.
@@ -180,7 +180,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
             The RTR service may have to be taken offline due to local issues (<xref target="CVE-2021-3761"/>, <xref target="CVE-2021-41531"/>, <xref target="CVE-2021-43114"/>), or, even worse, a misconfiguration may lead to the service flapping, e.g., when the system runs out of memory after a few minutes of communicating validation state to routers.
           </li>
           <li>
-            Validation state may seemingly lapse due to issues with time syncronization if, e.g., the clock of the validator diverts significantly, starting to consider CA's certificates invalid.
+            Validation state may seemingly lapse due to issues with time synchronization if, e.g., the clock of the validator diverts significantly, starting to consider CA's certificates invalid.
           </li>
           <li>
             Multiple operators use one central RTR service hosted by an external party, or depend on a similar validator, which becomes unavailable, e.g., due to maintenance or an outage, and local instances are not able to handle loss of this external service without changing validation state, i.e., do not serve from cache.
