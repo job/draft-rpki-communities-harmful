@@ -212,7 +212,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
     <section title="Cascading of BGP UPDATES" anchor="cascade">
       <t>
-        The aforementioned issues that may lead to changes in validation state for a large number of routes are not confined to singular UPDATE events.
+        The aforementioned scaling issues are not confined to singular UPDATE events.
         Instead, given that routers' view of the RPKI with RTR is only eventually consistent, update messages may cascade, i.e., one change in validation state may actually trigger multiple subsequent BGP UPDATE storms.
         If, for example, AS65536 is a downstream of AS65537 (both annotating validation state with BGP Communities), and a major CA fails, but AS65537 has their validator's cache updated before AS65536, AS65536 will first receive updates for all formerly valid routes learned from AS65537 when validation state changes there, and propagate these down its cone.
         Then, when the cache of AS65536 is updated as well, the community of AS65536 will again change for these routes, while also being propagated down the cone again.
@@ -231,7 +231,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </section>
     <section title="Lacking Value of Signaling Validation State">
       <t>
-        RTR has been developped to communicate validation information to routers.
+        RTR has been developed to communicate validation information to routers.
         BGP Attributes are not signed, and provide no assurance against third parties adding them, apart from BGP communities--ideally--being filtered at a networks edge.
         So, even in iBGP scenarios, their benefit in comparison to using RTR on all BGP speakers is limited.
       </t>
