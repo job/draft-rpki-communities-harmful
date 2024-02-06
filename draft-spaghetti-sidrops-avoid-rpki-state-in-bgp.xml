@@ -13,7 +13,7 @@
    category="bcp"
    consensus="true"
    submissionType="IETF"
-   docName="draft-spaghetti-sidrops-avoid-signaling-rpki-in-bgp-00"
+   docName="draft-spaghetti-sidrops-avoid-rpki-state-in-bgp-00"
    ipr="trust200902">
 <!-- For consideration: updates="7115" -->
   
