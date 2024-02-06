@@ -67,7 +67,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <abstract>
     <t>
       This document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes.
-      Annotating routes with attributes signalling validation state may flood needless BGP UPDATE messages through the global Internet routing system, when, for example, Route Origin Authorizations are issued, revoked, or RPKI-To-Router sessions are terminated.
+      Annotating routes with attributes signaling validation state may flood needless BGP UPDATE messages through the global Internet routing system, when, for example, Route Origin Authorizations are issued, revoked, or RPKI-To-Router sessions are terminated.
     </t>
     <t>
       Operators <bcp14>SHOULD</bcp14> ensure Validation States are not signalled in transitive BGP Path Attributes.
@@ -109,7 +109,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   <section title="Scope" anchor="scope">
     <t>
-      This document discusses signalling of RPKI validation state to BGP neighbors using transitive BGP attributes.
+      This document discusses signaling of RPKI validation state to BGP neighbors using transitive BGP attributes.
       At the time of writing, this pertains to the use of BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/> to signal RPKI ROV using ROAs.
       Note that this includes all operator specific BGP Communities to signal validation state, as well as any current or future documented well-known BGP Communities marking validation state, as, e.g., described for extended BGP Communities in <xref target="RFC8097"/>.
     <t>
@@ -119,9 +119,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
   </section>
 
-  <section title="Risks of Signaling Validation State With Transitive Attributes" anchor="signalling-risks">
+  <section title="Risks of Signaling Validation State With Transitive Attributes" anchor="signaling-risks">
     <t>
-      This section outlines the risks of signalling RPKI Validation State using BGP Communities.
+      This section outlines the risks of signaling RPKI Validation State using BGP Communities.
       While the current description is specific to BGP communities, the observations hold similar for all transitive attributes that may be added to a route.
       Furthermore, we will present data on the measured current impact of BGP Communities being used to signal RPKI Validation state.
     </t>
@@ -221,7 +221,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
     <section title="Observed data">
       <t>
-        In February 2024, a data-gathering initiative <xref target="Side-Effect"/> reported that between 8% and 10% of BGP updates seen on the Routing Information Service - RIS, contained well-known communities from large ISPs signalling either ROV-NotFound or ROV-Valid BGP Validation states.
+        In February 2024, a data-gathering initiative <xref target="Side-Effect"/> reported that between 8% and 10% of BGP updates seen on the Routing Information Service - RIS, contained well-known communities from large ISPs signaling either ROV-NotFound or ROV-Valid BGP Validation states.
         The study also demonstrated that the creation or removal of a ROA object triggered a chain of updates in a period of circa 1 hour following the change.
       </t>
       <t>
@@ -249,8 +249,8 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   <section title="Advantages of Dissociating Validation States and BGP Path Attributes">
     <t>
-      As outlined in <xref target="signalling-risks"/>, signalling validation state with transitive attributes carries significant risks for the stability of the global routing ecosystem.
-      Not signalling validation state, hence, has tangible benefits, specifically:
+      As outlined in <xref target="signaling-risks"/>, signaling validation state with transitive attributes carries significant risks for the stability of the global routing ecosystem.
+      Not signaling validation state, hence, has tangible benefits, specifically:
     </t>
     <ul spacing="normal">
       <li>
