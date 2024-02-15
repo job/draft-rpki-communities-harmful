@@ -170,22 +170,63 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
           </li>
         </ul>
       </section>
-      <section title="Validator Loss" anchor="outage-validator-loss">
+      <section title="Loss of Authoritative Validation Information" anchor="outage-validation-loss">
         <t>
           Similar to the issuance/revocation of routes, the validation pipeline of an operator may encounter issues.
-          For example, any of the following events may lead to RTR services used by an operator no longer providing validation state to routers, leading to routes changing from Valid to NotFound:
+          Issues may occur on the router side or on the validator side, with network connectivity issues having specific impact on either of the two.
         </t>
-        <ul spacing="normal">
-          <li>
-            The RTR service may have to be taken offline due to local issues (<xref target="CVE-2021-3761"/>, <xref target="CVE-2021-41531"/>, <xref target="CVE-2021-43114"/>), or, even worse, a misconfiguration may lead to the service flapping, e.g., when the system runs out of memory after a few minutes of communicating validation state to routers.
-          </li>
-          <li>
-            Validation state may seemingly lapse due to issues with time synchronization if, e.g., the clock of the validator diverts significantly, starting to consider CA's certificates invalid.
-          </li>
-          <li>
-            Multiple operators use one central RTR service hosted by an external party, or depend on a similar validator, which becomes unavailable, e.g., due to maintenance or an outage, and local instances are not able to handle loss of this external service without changing validation state, i.e., do not serve from cache.
-          </li>
-        </ul>
+        <t>
+          While, in general, implementations should not have bugs, operators should not make mistakes, and the network should be reliable, this is usually not the case in practice.
+          Hence, systems should be resilliant in case of unexpected issues, and not further amplify issues by creating a BGP UPDATE storm.
+        </t>
+        <t>
+          Below, we provide examples of events for both categories that may lead to the validation state of routes in one or multiple routers of an operator changing from Valid to NotFound.
+          This list serves illustrative purposes and does not claim completeness.
+        </t>
+        <section title="Validator Issues" anchor="outage-validation-loss-validator">
+          <t>
+            The following events may impact a validator's ability to provide validation information to routers:
+          </t>
+          <ul spacing="normal">
+            <li>
+              The RTR service may have to be taken offline temporarily for maintenance.
+              While operators should, in general, take care to provision sufficient redundancy, critical vulnerabilities may necessitate the immediate simultaneous shutdown of all RTR instances.
+            </li>
+            <li>
+              A validator may crash due to bugs when ingesting unexpected data from the RPKI, or run into performance issues due to insufficient available memory or limited I/O performance on the host.
+              In the worst case, especially memory issues, can lead to a flapping validator, e.g., when the system runs out of memory after a few minutes of communicating validation state to routers.
+            </li>
+            <li>
+              Validation state may seemingly lapse due to issues with time synchronization if, e.g., the clock of the validator diverts significantly, starting to consider CA's certificates invalid.
+            </li>
+            <li>
+              The validator may lose its network connectivity in general, or to specific CAs.
+              While, in general, the validator should be able to serve from cache, an operator may have to shutdown the validator in such a case, to prevent dropping prefixes as invalid due to stale data.
+            </li>
+          </ul>
+        </section>
+        <section title="Router Ingestion Issues" anchor="outage-validation-loss-validator">
+          <ul spacing="normal">
+            <li>
+              The RTR client, especially when implemented as a dedicated daemon, may fail to start, or terminate when receiving unexpected data.
+              Especially when this leads to a flapping client, e.g., due to a bug in the handling of incremental updates leading to a crash, while the initial retrieval is successful, this will lead to flapping between routes being Valid and NotFound.
+            </li>
+            <li>
+              A misconfiguration may impact a router's ability to communicate with the RTR service.
+              For example, the RTR client may lose its credentials or may not receive updated credentials in time when these are changed, or the address of the RTR service changes and is not updated on the router in time.
+            </li>
+            <li>
+              An RTR client may lose network connectivity to the RTR service.
+              While, in general, caches should prevent this from having immediate impact, an RTR clients behavior in case of a flapping network connection with frequent interruptions may lead to unexpected behavior and cache invalidation.
+              Similarly, after cache expirery, routes will change from Valid to NotFound.
+            </li>
+            <li>
+              As an extension of the previous point, multiple operators might be using one central RTR service hosted by an external party, or depend on a similar validator, which becomes unavailable, e.g., due to maintenance or an outage.
+              If local instances are not able to handle loss of this external service without changing validation state, i.e., do not serve from cache or the outage extends beyond cache expirery, routes will change their validation state from Valid to NotFound
+              Naturally, the negative impact in such a case is significantly larger in comparison to each operator running their own validator.
+            </li>
+          </ul>
+        </section>
       </section>
       <section title="Outage Scenario Summary" anchor="outage-summary">
         <t>
