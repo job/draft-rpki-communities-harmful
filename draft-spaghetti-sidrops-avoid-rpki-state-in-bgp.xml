@@ -177,6 +177,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         </t>
         <t>
           While, in general, implementations should not have bugs, operators should not make mistakes, and the network should be reliable, this is usually not the case in practice.
+          Instead, the worst-case of sudden and unexpected, yet unintentional, loss of validation state is an event that, however unlikely in a specific system, may and will happen.
           Hence, systems should be resilliant in case of unexpected issues, and not further amplify issues by creating a BGP UPDATE storm.
         </t>
         <t>
