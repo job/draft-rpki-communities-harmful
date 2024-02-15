@@ -239,12 +239,8 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
     <section title="Scaling issues">
       <t>
-        Following an RPKI service affecting <xref target="outage">outage</xref>, and considering roughly half the global Internet routing table nowadays is covered by RPKI ROAs <xref target="NIST"/>, any Autonomous System in which the local routing policy sets a BGP Community based on the ROV-Valid validation state, would need to send BGP UPDATE messages for roughly half the global Internet routing table if the validation state changes to ROV-NotFound.
+        For each change in validation state of a route, an Autonomous System in which the local routing policy sets a BGP Community based on the ROV-Valid validation state, would need to send BGP UPDATE messages for roughly half the global Internet routing table if the validation state changes to ROV-NotFound.
         The same, reversed case, would be true for every new ROA created by the address space holders, whereas a new BGP update would be generated, as the validation state would change to ROV-Valid.
-      </t>
-      <t>
-        As the global Internet routing table currently contains close to 1,000,000 prefixes <xref target="CIDR Report"/>, such convergence events represent a significant burden.
-        See <xref target="How-to-break"/> for an elaboration on this phenomenon.
       </t>
       <t>
         Furthermore, adding additional attributes to routes increases their size and memory consumption in the RIB of BGP routers.
@@ -252,12 +248,45 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       </t>
     </section>
 
-    <section title="Cascading of BGP UPDATES" anchor="cascade">
+    <section title="Flooding and Cascading of BGP UPDATES" anchor="cascadeandflood">
       <t>
         The aforementioned scaling issues are not confined to singular UPDATE events.
-        Instead, given that routers' view of the RPKI with RTR is only eventually consistent, update messages may cascade, i.e., one change in validation state may actually trigger multiple subsequent BGP UPDATE storms.
-        If, for example, AS65536 is a downstream of AS65537 (both annotating validation state with BGP Communities), and a major CA fails, but AS65537 has their validator's cache updated before AS65536, AS65536 will first receive updates for all formerly valid routes learned from AS65537 when validation state changes there, and propagate these down its cone.
-        Then, when the cache of AS65536 is updated as well, the community of AS65536 will again change for these routes, while also being propagated down the cone again.
+        Instead, changes in validation state may lead to floods and/or cascades of BGP UPDATES throughout the Internet.
+
+        <section title="Flooding of BGP UPDATES" anchor="flooding">
+          <t>
+            Flooding events are caused by an individual operator losing validation state.
+            If that operator annotates validation state using BGP communities, the operator will send updates for all routes that changed from Valid to NotFound to its downstreams, as well as updates for routes received from downstreams to its upstreams.
+          <t>
+          </t>
+            Following an RPKI service affecting <xref target="outage">outage</xref>, given that half the global Internet routing table with close to 1,000,000 prefixes <xref target="CIDR Report"/> nowadays is covered by RPKI ROAs <xref target="NIST"/>, such convergence events represent a significant burden.
+            See <xref target="How-to-break"/> for an elaboration on this phenomenon.
+          <t>
+        </section>
+
+        <section title="Cascading of BGP UPDATES" anchor="cascade">
+          <t>
+            For events that are not specific to one operator, e.g., a malicious widthdrawel of a ROA, loss of a major CA, or an unexpected downtime of a major centralized RTR service, events can also cascade for ASes annotating validation state using BGP communities.
+            Given that routers' view of the RPKI with RTR is only eventually consistent, update messages may cascade, i.e., one event affecting validation state may actually trigger multiple subsequent BGP UPDATE floods.
+          </t>
+          <t>
+            Assume, for example, that AS65536 is a downstream of AS65537 (both annotating validation state with BGP Communities and using a 300 second RTR cycle), and a centralized RTR service fails.
+            In the example, AS65536 has their routers updated from that cache a second before the service went down, while AS65537 was due for a refresh a second thereafter.
+          </t>
+          <t>
+            This means that a second after the RTR service went down, AS65537 will trigger a BGP UPDATE flood down its cone.
+            AS65536 will ingest and propagate these BGP UPDATES down its own cone as well.
+          </t>
+          <t>
+            When, rughly 300 seconds later, AS65536 fails to retrieve validation state as well, he community of AS65536 will again change for ROA covered routes, and it will again trigger a BGP UPDATE flood and propagate this down its cone.
+          </t>
+          <t>
+            Even if either or both of AS65536 and AS65537 use a cache after RTR expirery, the underlying issue would not change, assuming the RTR service downtime spans beyond the cache TTL.
+            Assuming a 30 minute cache TTL, both ASes using a cache would only move the cascading event 30 minutes later.
+            If only one of the two uses a cache, the two flood events get moved further apart.
+            However, the overall issue of two independent floods due to one event remains.
+          </t>
+        </section>
       </t>
     </section>
 
