@@ -368,36 +368,6 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <refcontent>CERN Academic Training Lecture Regular Programme; 2021-2022</refcontent>
     </reference>
 
-    <reference anchor="CVE-2021-3761" target="https://github.com/cloudflare/cfrpki/security/advisories/GHSA-c8xp-8mf3-62h9">
-      <front>
-        <title>OctoRPKI lacks contextual out-of-bounds check when validating RPKI ROA maxLength values</title>
-        <author>
-          <organization/>
-        </author>
-        <date month="September" year="2021"/>
-      </front>
-    </reference>
-
-    <reference anchor="CVE-2021-41531" target="https://www.nlnetlabs.nl/downloads/routinator/CVE-2021-41531.txt">
-      <front>
-        <title>Routinator prior to 0.10.0 produces invalid RTR payload if an RPKI CA uses too large values in the max-length parameter in a ROA</title>
-        <author>
-          <organization>NLnet Labs</organization>
-        </author>
-        <date month="September" year="2021"/>
-      </front>
-    </reference>
-
-    <reference anchor="CVE-2021-43114" target="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-43114">
-      <front>
-        <title>FORT Validator versions prior to 1.5.2 will crash if an RPKI CA publishes an X.509 EE certificate</title>
-        <author>
-          <organization>FORT project</organization>
-        </author>
-        <date month="November" year="2021"/>
-      </front>
-    </reference>
-
     <reference anchor="CA-Outage1" target="https://www.arin.net/announcements/20200813/">
       <front>
         <title>RPKI Service Notice Update</title>
