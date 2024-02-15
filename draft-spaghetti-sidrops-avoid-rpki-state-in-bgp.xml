@@ -342,7 +342,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <section title="Security Considerations">
     <t>
       The use of transitive attributes to signal RPKI validation state may enable attackers to cause notable route churn by issuing and withdrawing, e.g., ROAs for their prefixes.
-      DFZ routers may not be equiped to handle churn in all directions at global scale, especially if said churn cascades or repeats periodically.
+      DFZ routers may not be equipped to handle churn in all directions at global scale, especially if said churn cascades or repeats periodically.
     </t>
     <t>
       To prevent this, operators <bcp14>SHOULD NOT</bcp14> signal validation state to neighbors.
