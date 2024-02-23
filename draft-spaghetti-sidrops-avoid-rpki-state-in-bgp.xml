@@ -170,22 +170,64 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
           </li>
         </ul>
       </section>
-      <section title="Validator Loss" anchor="outage-validator-loss">
+      <section title="Loss of Authoritative Validation Information" anchor="outage-validation-loss">
         <t>
           Similar to the issuance/revocation of routes, the validation pipeline of an operator may encounter issues.
-          For example, any of the following events may lead to RTR services used by an operator no longer providing validation state to routers, leading to routes changing from Valid to NotFound:
+          Issues may occur on the router side or on the validator side, with network connectivity issues having specific impact on either of the two.
         </t>
-        <ul spacing="normal">
-          <li>
-            The RTR service may have to be taken offline due to local issues (<xref target="CVE-2021-3761"/>, <xref target="CVE-2021-41531"/>, <xref target="CVE-2021-43114"/>), or, even worse, a misconfiguration may lead to the service flapping, e.g., when the system runs out of memory after a few minutes of communicating validation state to routers.
-          </li>
-          <li>
-            Validation state may seemingly lapse due to issues with time synchronization if, e.g., the clock of the validator diverts significantly, starting to consider CA's certificates invalid.
-          </li>
-          <li>
-            Multiple operators use one central RTR service hosted by an external party, or depend on a similar validator, which becomes unavailable, e.g., due to maintenance or an outage, and local instances are not able to handle loss of this external service without changing validation state, i.e., do not serve from cache.
-          </li>
-        </ul>
+        <t>
+          While, in general, implementations should not have bugs, operators should not make mistakes, and the network should be reliable, this is usually not the case in practice.
+          Instead, the worst-case of sudden and unexpected, yet unintentional, loss of validation state is an event that, however unlikely in a specific system, may and will happen.
+          Hence, systems should be resilliant in case of unexpected issues, and not further amplify issues by creating a BGP UPDATE storm.
+        </t>
+        <t>
+          Below, we provide examples of events for both categories that may lead to the validation state of routes in one or multiple routers of an operator changing from Valid to NotFound.
+          This list serves illustrative purposes and does not claim completeness.
+        </t>
+        <section title="Validator Issues" anchor="outage-validation-loss-validator">
+          <t>
+            The following events may impact a validator's ability to provide validation information to routers:
+          </t>
+          <ul spacing="normal">
+            <li>
+              The RTR service may have to be taken offline temporarily for maintenance.
+              While operators should, in general, take care to provision sufficient redundancy, critical vulnerabilities may necessitate the immediate simultaneous shutdown of all RTR instances.
+            </li>
+            <li>
+              A validator may crash due to bugs when ingesting unexpected data from the RPKI, or run into performance issues due to insufficient available memory or limited I/O performance on the host.
+              In the worst case, especially memory issues, can lead to a flapping validator, e.g., when the system runs out of memory after a few minutes of communicating validation state to routers.
+            </li>
+            <li>
+              Validation state may seemingly lapse due to issues with time synchronization if, e.g., the clock of the validator diverts significantly, starting to consider CA's certificates invalid.
+            </li>
+            <li>
+              The validator may lose its network connectivity in general, or to specific CAs.
+              While, in general, the validator should be able to serve from cache, an operator may have to shutdown the validator in such a case, to prevent dropping prefixes as invalid due to stale data.
+            </li>
+          </ul>
+        </section>
+        <section title="Router Ingestion Issues" anchor="outage-validation-loss-router">
+          <ul spacing="normal">
+            <li>
+              The RTR client, especially when implemented as a dedicated daemon, may fail to start, or terminate when receiving unexpected data.
+              Especially when this leads to a flapping client, e.g., due to a bug in the handling of incremental updates leading to a crash, while the initial retrieval is successful, this will lead to flapping between routes being Valid and NotFound.
+            </li>
+            <li>
+              A misconfiguration may impact a router's ability to communicate with the RTR service.
+              For example, the RTR client may lose its credentials or may not receive updated credentials in time when these are changed, or the address of the RTR service changes and is not updated on the router in time.
+            </li>
+            <li>
+              An RTR client may lose network connectivity to the RTR service.
+              While, in general, caches should prevent this from having immediate impact, an RTR clients behavior in case of a flapping network connection with frequent interruptions may lead to unexpected behavior and cache invalidation.
+              Similarly, after cache expirery, routes will change from Valid to NotFound.
+            </li>
+            <li>
+              As an extension of the previous point, multiple operators might be using one central RTR service hosted by an external party, or depend on a similar validator, which becomes unavailable, e.g., due to maintenance or an outage.
+              If local instances are not able to handle loss of this external service without changing validation state, i.e., do not serve from cache or the outage extends beyond cache expirery, routes will change their validation state from Valid to NotFound
+              Naturally, the negative impact in such a case is significantly larger in comparison to each operator running their own validator.
+            </li>
+          </ul>
+        </section>
       </section>
       <section title="Outage Scenario Summary" anchor="outage-summary">
         <t>
@@ -197,12 +239,8 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
     <section title="Scaling issues">
       <t>
-        Following an RPKI service affecting <xref target="outage">outage</xref>, and considering roughly half the global Internet routing table nowadays is covered by RPKI ROAs <xref target="NIST"/>, any Autonomous System in which the local routing policy sets a BGP Community based on the ROV-Valid validation state, would need to send BGP UPDATE messages for roughly half the global Internet routing table if the validation state changes to ROV-NotFound.
+        For each change in validation state of a route, an Autonomous System in which the local routing policy sets a BGP Community based on the ROV-Valid validation state, would need to send BGP UPDATE messages for roughly half the global Internet routing table if the validation state changes to ROV-NotFound.
         The same, reversed case, would be true for every new ROA created by the address space holders, whereas a new BGP update would be generated, as the validation state would change to ROV-Valid.
-      </t>
-      <t>
-        As the global Internet routing table currently contains close to 1,000,000 prefixes <xref target="CIDR Report"/>, such convergence events represent a significant burden.
-        See <xref target="How-to-break"/> for an elaboration on this phenomenon.
       </t>
       <t>
         Furthermore, adding additional attributes to routes increases their size and memory consumption in the RIB of BGP routers.
@@ -210,13 +248,46 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       </t>
     </section>
 
-    <section title="Cascading of BGP UPDATES" anchor="cascade">
+    <section title="Flooding and Cascading of BGP UPDATES" anchor="cascadeandflood">
       <t>
         The aforementioned scaling issues are not confined to singular UPDATE events.
-        Instead, given that routers' view of the RPKI with RTR is only eventually consistent, update messages may cascade, i.e., one change in validation state may actually trigger multiple subsequent BGP UPDATE storms.
-        If, for example, AS65536 is a downstream of AS65537 (both annotating validation state with BGP Communities), and a major CA fails, but AS65537 has their validator's cache updated before AS65536, AS65536 will first receive updates for all formerly valid routes learned from AS65537 when validation state changes there, and propagate these down its cone.
-        Then, when the cache of AS65536 is updated as well, the community of AS65536 will again change for these routes, while also being propagated down the cone again.
+        Instead, changes in validation state may lead to floods and/or cascades of BGP UPDATES throughout the Internet.
       </t>
+
+      <section title="Flooding of BGP UPDATES" anchor="flooding">
+        <t>
+          Flooding events are caused by an individual operator losing validation state.
+          If that operator annotates validation state using BGP communities, the operator will send updates for all routes that changed from Valid to NotFound to its downstreams, as well as updates for routes received from downstreams to its upstreams.
+        </t>
+        <t>
+          Following an RPKI service affecting <xref target="outage">outage</xref>, given that half the global Internet routing table with close to 1,000,000 prefixes <xref target="CIDR Report"/> nowadays is covered by RPKI ROAs <xref target="NIST"/>, such convergence events represent a significant burden.
+          See <xref target="How-to-break"/> for an elaboration on this phenomenon.
+        </t>
+      </section>
+
+      <section title="Cascading of BGP UPDATES" anchor="cascade">
+        <t>
+          For events that are not specific to one operator, e.g., a malicious widthdrawel of a ROA, loss of a major CA, or an unexpected downtime of a major centralized RTR service, events can also cascade for ASes annotating validation state using BGP communities.
+          Given that routers' view of the RPKI with RTR is only eventually consistent, update messages may cascade, i.e., one event affecting validation state may actually trigger multiple subsequent BGP UPDATE floods.
+        </t>
+        <t>
+          Assume, for example, that AS65536 is a downstream of AS65537 (both annotating validation state with BGP Communities and using a 300 second RTR cycle), and a centralized RTR service fails.
+          In the example, AS65536 has their routers updated from that cache a second before the service went down, while AS65537 was due for a refresh a second thereafter.
+        </t>
+        <t>
+          This means that a second after the RTR service went down, AS65537 will trigger a BGP UPDATE flood down its cone.
+          AS65536 will ingest and propagate these BGP UPDATES down its own cone as well.
+        </t>
+        <t>
+          When, rughly 300 seconds later, AS65536 fails to retrieve validation state as well, he community of AS65536 will again change for ROA covered routes, and it will again trigger a BGP UPDATE flood and propagate this down its cone.
+        </t>
+        <t>
+          Even if either or both of AS65536 and AS65537 use a cache after RTR expirery, the underlying issue would not change, assuming the RTR service downtime spans beyond the cache TTL.
+          Assuming a 30 minute cache TTL, both ASes using a cache would only move the cascading event 30 minutes later.
+          If only one of the two uses a cache, the two flood events get moved further apart.
+          However, the overall issue of two independent floods due to one event remains.
+        </t>
+      </section>
     </section>
 
     <section title="Observed data">
@@ -271,7 +342,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <section title="Security Considerations">
     <t>
       The use of transitive attributes to signal RPKI validation state may enable attackers to cause notable route churn by issuing and withdrawing, e.g., ROAs for their prefixes.
-      DFZ routers may not be equiped to handle churn in all directions at global scale, especially if said churn cascades or repeats periodically.
+      DFZ routers may not be equipped to handle churn in all directions at global scale, especially if said churn cascades or repeats periodically.
     </t>
     <t>
       To prevent this, operators <bcp14>SHOULD NOT</bcp14> signal validation state to neighbors.
@@ -325,36 +396,6 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         <date month="March" year="2022"/>
       </front>
       <refcontent>CERN Academic Training Lecture Regular Programme; 2021-2022</refcontent>
-    </reference>
-
-    <reference anchor="CVE-2021-3761" target="https://github.com/cloudflare/cfrpki/security/advisories/GHSA-c8xp-8mf3-62h9">
-      <front>
-        <title>OctoRPKI lacks contextual out-of-bounds check when validating RPKI ROA maxLength values</title>
-        <author>
-          <organization/>
-        </author>
-        <date month="September" year="2021"/>
-      </front>
-    </reference>
-
-    <reference anchor="CVE-2021-41531" target="https://www.nlnetlabs.nl/downloads/routinator/CVE-2021-41531.txt">
-      <front>
-        <title>Routinator prior to 0.10.0 produces invalid RTR payload if an RPKI CA uses too large values in the max-length parameter in a ROA</title>
-        <author>
-          <organization>NLnet Labs</organization>
-        </author>
-        <date month="September" year="2021"/>
-      </front>
-    </reference>
-
-    <reference anchor="CVE-2021-43114" target="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-43114">
-      <front>
-        <title>FORT Validator versions prior to 1.5.2 will crash if an RPKI CA publishes an X.509 EE certificate</title>
-        <author>
-          <organization>FORT project</organization>
-        </author>
-        <date month="November" year="2021"/>
-      </front>
     </reference>
 
     <reference anchor="CA-Outage1" target="https://www.arin.net/announcements/20200813/">
