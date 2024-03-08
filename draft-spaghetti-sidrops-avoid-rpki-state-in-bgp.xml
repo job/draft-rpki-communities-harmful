@@ -93,7 +93,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       Hence, this document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes <xref target="RFC4271" section="5"/>.
-      Specifically, Operators are <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state <xref target="RFC6811"/> into distinct BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/>.
+      Specifically, Operators <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state <xref target="RFC6811"/> into distinct BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/>.
       Not using BGP Communities to signal RPKI validation state prevent needless BGP UPDATE messages from being flooded through the global Internet routing system.
     </t>
 
