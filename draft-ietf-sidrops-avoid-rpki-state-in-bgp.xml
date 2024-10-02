@@ -111,8 +111,8 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <t>
       This document discusses signaling locally significant RPKI Validation States to BGP neighbors through transitive BGP attributes.
       This includes operator-specific BGP Communities to signal Validation States, as well as any current or future standardized well-known BGP Communities denoting Validation State (for example as specified for Extended BGP Communities in <xref target="RFC8097"/>).
-    <t>
     </t>
+    <t>
       The guidance in this document applies to all current and future transitive BGP attributes that may be implicitly or explicitly used to signal Validation State to neighbors.
       Similarly, this applies to non-ROA validation mechanics based on RPKI, e.g., ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/>, BGPSec <xref target="RFC8205"/>, and any other future validation mechanic build upon the RPKI.
     </t>
