@@ -351,7 +351,10 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       DFZ routers may not be equipped to handle route churn in all directions at global scale, especially if said route churn cascades, persists, or repeats periodically.
-      To prevent global route churn, operators <bcp14>SHOULD NOT</bcp14> signal Validation State to eBGP neighbors through BGP path attributes.
+      To prevent global route churn, operators <bcp14>SHOULD NOT</bcp14> signal RPKI Validation State to eBGP neighbors through transitive BGP path attributes.
+	  If an operator is dependent on signaling RPKI Validation State among BGP speakers within their AS, they <bcp14>SHOULD</bcp14> ensure that these attributes are removed before announcing NLRI to eBGP neighbors.
+    </t>
+    <t>
       Furthermore, operators <bcp14>SHOULD</bcp14> consider transitive attributes on NLRI imported from eBGP neighbors to be harmful.
 	  Therefore, operators <bcp14>SHOULD</bcp14> remove values used to signal RPKI Validation State when importing NLRI with an idempotent operation until the corresponding neighbor follows guidance in this document as well.
       <!-- Clarified what 'not accept' means here;
