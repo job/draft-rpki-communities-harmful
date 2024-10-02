@@ -131,7 +131,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <section title="ROA Issuance" anchor="outage-roa-issuance">
         <t>
           Large-Scale ROA issuance should be a comparatively rare event for individual networks.
-          However, several cases exist where issuance by individual operators or (malicious) coordinated issuance of ROAs by multiple operators may lead to a high churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI Validation State.
+          However, several cases exist where issuance by individual operators or (malicious) coordinated issuance of ROAs by multiple operators may lead to a high route churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI Validation State.
         </t>
         <t>
           Specifically:
@@ -152,7 +152,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <section title="ROA Revocation" anchor="outage-roa-revocation">
         <t>
           Large-Scale ROA revocation should be a comparatively rare event for individual networks.
-          However, several cases exist where revocations by individual operators or (malicious) coordinated revocation of ROAs by multiple operators may lead to a high churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI Validation State.
+          However, several cases exist where revocations by individual operators or (malicious) coordinated revocation of ROAs by multiple operators may lead to a high route churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI Validation State.
         </t>
         <t>
           Specifically:
@@ -341,7 +341,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <section title="Security Considerations">
     <t>
       The use of transitive attributes to signal RPKI Validation State may enable attackers to cause notable route churn by issuing and withdrawing, e.g., ROAs for their prefixes.
-      DFZ routers may not be equipped to handle churn in all directions at global scale, especially if said churn cascades or repeats periodically.
+      DFZ routers may not be equipped to handle route churn in all directions at global scale, especially if said route churn cascades or repeats periodically.
     </t>
     <t>
       To prevent the aforementioned issue, operators <bcp14>SHOULD NOT</bcp14> signal Validation State to neighbors through BGP path attributes.
