@@ -114,7 +114,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       The guidance in this document applies to all current and future transitive BGP attributes that may be implicitly or explicitly used to signal Validation State to neighbors.
-      Similarly, this applies to non-ROA validation mechanics based on RPKI, e.g., ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/>, BGPSec <xref target="RFC8205"/>, and any other future validation mechanic build upon the RPKI.
+      Similarly, this guidance also applies to non-ROA validation mechanics based on RPKI, e.g., ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/>, BGPSec <xref target="RFC8205"/>, and any other future validation mechanic build upon the RPKI.
     </t>
   </section>
 
