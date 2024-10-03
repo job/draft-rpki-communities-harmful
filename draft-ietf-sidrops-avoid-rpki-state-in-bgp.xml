@@ -94,7 +94,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <t>
       Hence, this document provides guidance to avoid carrying RPKI-derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes <xref target="RFC4271" section="5"/>.
       Specifically, operators <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state <xref target="RFC6811"/> into BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/>.
-      If local technical requirements or the implementation used by an operator necessitates the use of transitive attributes to signal RPKI Validation State, the operator <bcp14>SHOULD</bcp14> ensure that these attributes are removed in NLRI announced to eBGP neighbors.
+      If local technical requirements or the implementation used by an operator necessitates the use of transitive attributes to signal RPKI Validation State, the operator <bcp14>SHOULD</bcp14> ensure that these attributes are removed in NLRI announced to EBGP neighbors.
       Avoiding the use of BGP Communities to signal RPKI Validation States prevents BGP UPDATE messages from being needlessly flooded into the global Internet routing system.
     </t>
 
@@ -119,7 +119,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       The document acknowleges that specific operational requirements, e.g., a used implementation still being dependent on it, may necessitate the use of transitive BGP path attributes to signal RPKI Validation State.
-      If this is the case, the dependent operator <bcp14>SHOULD</bcp14> ensure that these attributes are removed before announcing NLRI to eBGP neighbors.
+      If this is the case, the dependent operator <bcp14>SHOULD</bcp14> ensure that these attributes are removed before announcing NLRI to EBGP neighbors.
     </t>
   </section>
 
@@ -356,11 +356,11 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       DFZ routers may not be equipped to handle route churn in all directions at global scale, especially if said route churn cascades, persists, or repeats periodically.
-      To prevent global route churn, operators <bcp14>SHOULD NOT</bcp14> signal RPKI Validation State to eBGP neighbors through transitive BGP path attributes.
-      If an operator is dependent on signaling RPKI Validation State among BGP speakers within their AS, they <bcp14>SHOULD</bcp14> ensure that these attributes are removed before announcing NLRI to eBGP neighbors.
+      To prevent global route churn, operators <bcp14>SHOULD NOT</bcp14> signal RPKI Validation State to EBGP neighbors through transitive BGP path attributes.
+      If an operator is dependent on signaling RPKI Validation State among BGP speakers within their AS, they <bcp14>SHOULD</bcp14> ensure that these attributes are removed before announcing NLRI to EBGP neighbors.
     </t>
     <t>
-      Furthermore, operators <bcp14>SHOULD</bcp14> consider transitive attributes on NLRI imported from eBGP neighbors to be harmful.
+      Furthermore, operators <bcp14>SHOULD</bcp14> consider transitive attributes on NLRI imported from EBGP neighbors to be harmful.
       Therefore, operators <bcp14>SHOULD</bcp14> remove values used to signal RPKI Validation State when importing NLRI with an idempotent operation until the corresponding neighbor follows guidance in this document as well.
       <!-- Clarified what 'not accept' means here;
            Still, this mildly collides with the 'do not touch' guidance in the bgp-opsec-upd draft.
