@@ -272,7 +272,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <section title="Cascading of BGP UPDATES" anchor="cascade">
         <t>
           For events that are not specific to one operator, e.g., a malicious widthdrawel of a ROA, loss of a major CA, or an unexpected downtime of a major centralized RTR service, events can also cascade for ASes annotating Validation State using BGP communities.
-          Given that routers' view of the RPKI with RTR is only eventually consistent, update messages may cascade, i.e., one event affecting Validation State may actually trigger multiple subsequent BGP UPDATE floods.
+          Given that routers' view of the RPKI with RTR are only loosely consistent, update messages may cascade, i.e., one event affecting Validation State may actually trigger multiple subsequent BGP UPDATE floods.
         </t>
         <t>
           Assume, for example, that AS65536 is a downstream of AS65537 (both annotating Validation State with BGP Communities and using a 300 second RTR cycle), and a centralized RTR service fails.
@@ -345,7 +345,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   <section title="Security Considerations">
     <t>
-      BGP is not guranteed to converge, and the view on the RPKI within an individual administrative domain is only eventually consistent.
+      BGP is not guranteed to converge, and the view on the RPKI within an individual administrative domain is only loosely consistent.
       External validation state anotated in a received NLRI may either depend on a different view on the RPKI than the one in the local administrative domain, or the NLRI may be several hours old itself.
       Hence, the Validation State of a received announcement can only have local scope.
     </t>
