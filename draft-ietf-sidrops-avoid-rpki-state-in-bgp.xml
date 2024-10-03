@@ -71,7 +71,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       Operators <bcp14>SHOULD</bcp14> ensure Validation States are not signaled in transitive BGP Path Attributes.
-      Specifically, Operators <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state into distinct BGP Communities.
+      Specifically, Operators <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state into BGP Communities.
     </t>
   </abstract>
   
@@ -83,17 +83,18 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
     <t>
       The Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> allows for validating received BGP routes, e.g., their Route Origin Validation (ROV) state.
-      In the past some operators and vendors suggested to use distinct BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/> to annotate received routes with the local Validation State.
+      In the past some operators and vendors suggested to use BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/> to annotate received routes with the local Validation State.
       Some claim that the practice of signaling Validation States could be useful, for example to IBGP speakers, in order to avoid each IBGP speaker having to perform their own route origin validation.
     </t>
     <t>
-      However, annotating a route with a distinct transitive attribute (based on the Validation State) means that BGP update messages have to be send to every neighbor when the Validation State changes.
+      However, annotating a route with a transitive attribute (based on the Validation State) means that BGP update messages have to be send to every neighbor when the Validation State changes.
       This means that when for example Route Origin Authorizations <xref target="RFC9582"/> are issued, or are revoked, or RPKI-To-Router <xref target="RFC8210"/> sessions are terminated, new BGP UPDATE messages will have to be sent for all routes that were previously annotated with a BGP Community associated with a different Validation State.
       Furthermore, given that BGP Communities are a transitive attribute, such a BGP UPDATE might end up propagating through large portions of the Default-Free Zone (DFZ).
     </t>
     <t>
       Hence, this document provides guidance to avoid carrying RPKI-derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes <xref target="RFC4271" section="5"/>.
-      Specifically, Operators <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state <xref target="RFC6811"/> into distinct BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/>.
+      Specifically, operators <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state <xref target="RFC6811"/> into BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/>.
+      If local technical requirements or the implementation used by an operator necessitates the use of transitive attributes to signal RPKI Validation State, the operator <bcp14>SHOULD</bcp14> ensure that these attributes are removed in NLRI announced to EBGP neighbors.
       Avoiding the use of BGP Communities to signal RPKI Validation States prevents BGP UPDATE messages from being needlessly flooded into the global Internet routing system.
     </t>
 
@@ -109,12 +110,16 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   <section title="Scope" anchor="scope">
     <t>
-      This document discusses signaling locally significant RPKI Validation States to BGP neighbors through transitive BGP attributes.
+      This document discusses signaling locally significant RPKI Validation States to external BGP neighbors through transitive BGP attributes.
       This includes operator-specific BGP Communities to signal Validation States, as well as any current or future standardized well-known BGP Communities denoting Validation State (for example as specified for Extended BGP Communities in <xref target="RFC8097"/>).
-    <t>
     </t>
+    <t>
       The guidance in this document applies to all current and future transitive BGP attributes that may be implicitly or explicitly used to signal Validation State to neighbors.
-      Similarly, this applies to non-ROA validation mechanics based on RPKI, e.g., ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/>, BGPSec <xref target="RFC8205"/>, and any other future validation mechanic build upon the RPKI.
+      Similarly, this guidance also applies to non-ROA validation mechanics based on RPKI, e.g., ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/>, BGPSec <xref target="RFC8205"/>, and any other future validation mechanic build upon the RPKI.
+    </t>
+    <t>
+      The document acknowleges that specific operational requirements, e.g., a BGP implementation used by an operator still being dependent on annotating RPKI Validation State using BGP attributes, may necessitate the use of BGP path attributes to signal RPKI Validation State.
+      If this is the case, the dependent operator <bcp14>SHOULD</bcp14> ensure that these attributes are removed before announcing NLRI to EBGP neighbors.
     </t>
   </section>
 
@@ -131,7 +136,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <section title="ROA Issuance" anchor="outage-roa-issuance">
         <t>
           Large-Scale ROA issuance should be a comparatively rare event for individual networks.
-          However, several cases exist where issuance by individual operators or (malicious) coordinated issuance of ROAs by multiple operators may lead to a high churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI Validation State.
+          However, several cases exist where issuance by individual operators or (malicious) coordinated issuance of ROAs by multiple operators may lead to a high route churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI Validation State.
         </t>
         <t>
           Specifically:
@@ -152,7 +157,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <section title="ROA Revocation" anchor="outage-roa-revocation">
         <t>
           Large-Scale ROA revocation should be a comparatively rare event for individual networks.
-          However, several cases exist where revocations by individual operators or (malicious) coordinated revocation of ROAs by multiple operators may lead to a high churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI Validation State.
+          However, several cases exist where revocations by individual operators or (malicious) coordinated revocation of ROAs by multiple operators may lead to a high route churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI Validation State.
         </t>
         <t>
           Specifically:
@@ -340,14 +345,26 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   <section title="Security Considerations">
     <t>
-      The use of transitive attributes to signal RPKI Validation State may enable attackers to cause notable route churn by issuing and withdrawing, e.g., ROAs for their prefixes.
-      DFZ routers may not be equipped to handle churn in all directions at global scale, especially if said churn cascades or repeats periodically.
+      BGP is not guranteed to converge, and the view on the RPKI within an individual administrative domain is only eventually consistent.
+      External validation state anotated in a received NLRI may either depend on a different view on the RPKI than the one in the local administrative domain, or the NLRI may be several hours old itself.
+      Hence, the Validation State of a received announcement can only have local scope.
     </t>
     <t>
-      To prevent the aforementioned issue, operators <bcp14>SHOULD NOT</bcp14> signal Validation State to neighbors through BGP path attributes.
-      Furthermore, Validation State signaling <bcp14>SHOULD NOT</bcp14> be accepted from a neighbor AS.
-      Instead, the Validation State of a received announcement has only local scope due to issues such as scope of trust and RPKI synchrony.
-      <!-- synchrony here is meant to refer to the global RPKI eventually being consistent, a Validation State in a BGP community might be hours old -->
+      Additionally, the use of transitive attributes to signal RPKI Validation State may enable attackers to cause notable route churn.
+      This can be accomplished by an attacker issuing and withdrawing, e.g., ROAs for their prefixes, or by the attacker continuously altering transitive attributes used to signal RPKI Validation State for NLRI they readvertise.
+      The latter is possible as NLRI carry no information allowing an ingesting party to validate the integrity of transitive BGP attributes.
+    </t>
+    <t>
+      DFZ routers may not be equipped to handle route churn in all directions at global scale, especially if said route churn cascades, persists, or repeats periodically.
+      To prevent global route churn, operators <bcp14>SHOULD NOT</bcp14> signal RPKI Validation State to EBGP neighbors through transitive BGP path attributes.
+      If an operator is dependent on signaling RPKI Validation State among BGP speakers within their AS, they <bcp14>SHOULD</bcp14> ensure that these attributes are removed before announcing NLRI to EBGP neighbors.
+    </t>
+    <t>
+      Given their potential negative impact, operators <bcp14>SHOULD</bcp14> remove attributes used to signal RPKI Validation State when importing NLRI with an idempotent operation until the corresponding neighbor follows guidance in this document as well.
+      <!-- Clarified what 'not accept' means here;
+           Still, this mildly collides with the 'do not touch' guidance in the bgp-opsec-upd draft.
+           Given the formulation there, though, I believe that the above would be sensible guidance, i.e., remove those attributes.
+           Not sure whether it is necessary to specify idempotency.-->
     </t>
   </section>
 
