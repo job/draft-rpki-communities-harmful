@@ -346,7 +346,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <section title="Security Considerations">
     <t>
       BGP is not guranteed to converge, and RPKI lacks strict consistency, and is instead only eventually consistent.
-      External validation state anotated in a received NLRI may either depend on a less current view on the RPKI than the one in local scope, or the NLRI may be several hours old itself.
+      External validation state anotated in a received NLRI may either depend on a less current view on the RPKI than the one in the local administrative domain, or the NLRI may be several hours old itself.
       Hence, the Validation State of a received announcement can only have local scope.
     </t>
     <t>
