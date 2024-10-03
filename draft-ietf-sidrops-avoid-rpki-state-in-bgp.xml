@@ -360,8 +360,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       If an operator is dependent on signaling RPKI Validation State among BGP speakers within their AS, they <bcp14>SHOULD</bcp14> ensure that these attributes are removed before announcing NLRI to EBGP neighbors.
     </t>
     <t>
-      Furthermore, operators <bcp14>SHOULD</bcp14> consider transitive attributes on NLRI imported from EBGP neighbors to be harmful.
-      Therefore, operators <bcp14>SHOULD</bcp14> remove values used to signal RPKI Validation State when importing NLRI with an idempotent operation until the corresponding neighbor follows guidance in this document as well.
+      Given their potential negative impact, operators <bcp14>SHOULD</bcp14> remove attributes used to signal RPKI Validation State when importing NLRI with an idempotent operation until the corresponding neighbor follows guidance in this document as well.
       <!-- Clarified what 'not accept' means here;
            Still, this mildly collides with the 'do not touch' guidance in the bgp-opsec-upd draft.
            Given the formulation there, though, I believe that the above would be sensible guidance, i.e., remove those attributes.
