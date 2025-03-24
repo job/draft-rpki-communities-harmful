@@ -87,8 +87,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       A use-case for this would be, for example, centralizing validation in IBGP scenarios, instead of requiring each IBGP speaker to run route origin validation itself.
     </t>
     <t>
-      However, annotating a route with a transitive attribute (based on the Validation State) means that BGP update messages have to be send to every neighbor when the Validation State changes.
-      This means that when for example Route Origin Authorizations <xref target="RFC9582"/> are issued, or are revoked, or RPKI-To-Router <xref target="RFC8210"/> sessions are terminated, new BGP UPDATE messages will have to be sent for all routes that were previously annotated with a BGP Community associated with a different Validation State.
+      However, such a practice does not only conflict with core concepts of RPKI, but also threatens the stability of networks.
+      Annotating a route with a transitive attribute (based on the Validation State) means that BGP update messages have to be send to every neighbor when the Validation State changes.
+      This means that when, for example, Route Origin Authorizations <xref target="RFC9582"/> are issued, or are revoked, or RPKI-To-Router <xref target="RFC8210"/> sessions are terminated, new BGP UPDATE messages will have to be sent for all routes that were previously annotated with a BGP Community associated with a different Validation State.
       Furthermore, given that BGP Communities are a transitive attribute, such a BGP UPDATE might end up propagating through large portions of the Default-Free Zone (DFZ).
     </t>
     <t>
