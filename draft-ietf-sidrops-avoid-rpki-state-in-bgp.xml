@@ -83,7 +83,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
     <t>
       The Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> allows for validating received BGP routes, e.g., their Route Origin Validation (ROV) state.
-      In the past some operators and vendors suggested to use BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/> to annotate received routes with the local Validation State.
+      In the past some operators and vendors suggested to use BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/> to annotate received routes with the local Validation State on a router.
       Some claim that the practice of signaling Validation States could be useful, for example to IBGP speakers, in order to avoid each IBGP speaker having to perform their own route origin validation.
     </t>
     <t>
