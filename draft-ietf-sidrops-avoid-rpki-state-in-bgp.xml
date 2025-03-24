@@ -84,7 +84,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <t>
       The Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> allows for validating received BGP routes, e.g., their Route Origin Validation (ROV) state.
       In the past some operators and vendors suggested to use BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/> to annotate received routes with the local Validation State on a router.
-      Some claim that the practice of signaling Validation States could be useful, for example to IBGP speakers, in order to avoid each IBGP speaker having to perform their own route origin validation.
+      A use-case for this would be, for example, centralizing validation in IBGP scenarios, instead of requiring each IBGP speaker to run route origin validation itself.
     </t>
     <t>
       However, annotating a route with a transitive attribute (based on the Validation State) means that BGP update messages have to be send to every neighbor when the Validation State changes.
