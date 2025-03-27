@@ -71,7 +71,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       Operators <bcp14>SHOULD</bcp14> ensure Validation States are not signaled in transitive BGP Path Attributes.
-      Specifically, Operators <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state into BGP Communities.
+      Specifically, Operators <bcp14>SHOULD NOT</bcp14> tag BGP routes by their Prefix Origin Validation state into BGP Communities.
     </t>
   </abstract>
   
@@ -93,7 +93,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       Hence, this document provides guidance to avoid carrying RPKI-derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes <xref target="RFC4271" section="5"/>.
-      Specifically, operators <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state <xref target="RFC6811"/> into BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/>.
+      Specifically, operators <bcp14>SHOULD NOT</bcp14> tag BGP routes by their Prefix Origin Validation state <xref target="RFC6811"/> into BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/>.
       If local technical requirements or the implementation used by an operator necessitates the use of transitive attributes to signal RPKI Validation State, the operator <bcp14>SHOULD</bcp14> ensure that these attributes are removed in NLRI announced to EBGP neighbors.
       Avoiding the use of BGP Communities to signal RPKI Validation States prevents BGP UPDATE messages from being needlessly flooded into the global Internet routing system.
     </t>
