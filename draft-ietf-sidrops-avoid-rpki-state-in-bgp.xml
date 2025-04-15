@@ -82,12 +82,13 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <section title="Introduction">
 
     <t>
-      The Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> allows for validating received BGP routes, e.g., their Route Origin Validation (ROV) state.
-      In the past some operators and vendors suggested to use BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/> to annotate received routes with the local Validation State.
+			The Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> allows for validating received BGP routes.  
+			By means of this validation process, routes attain a Route Origin Validation (ROV) state.
+      In the past, some operators and vendors suggested to use BGP Communities <xref target="RFC1997"/> and <xref target="RFC8092"/> to annotate received routes with the local Validation State.
       Some claim that the practice of signaling Validation States could be useful, for example to IBGP speakers, in order to avoid each IBGP speaker having to perform their own route origin validation.
     </t>
     <t>
-      However, annotating a route with a transitive attribute (based on the Validation State) means that BGP update messages have to be send to every neighbor when the Validation State changes.
+      However, annotating a route with a transitive attribute (based on the Validation State) means that BGP update messages have to be sent to every neighbor when the Validation State changes.
       This means that when for example Route Origin Authorizations <xref target="RFC9582"/> are issued, or are revoked, or RPKI-To-Router <xref target="RFC8210"/> sessions are terminated, new BGP UPDATE messages will have to be sent for all routes that were previously annotated with a BGP Community associated with a different Validation State.
       Furthermore, given that BGP Communities are a transitive attribute, such a BGP UPDATE might end up propagating through large portions of the Default-Free Zone (DFZ).
     </t>
@@ -115,10 +116,10 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       The guidance in this document applies to all current and future transitive BGP attributes that may be implicitly or explicitly used to signal Validation State to neighbors.
-      Similarly, this guidance also applies to non-ROA validation mechanics based on RPKI, e.g., ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/>, BGPSec <xref target="RFC8205"/>, and any other future validation mechanic build upon the RPKI.
+      Similarly, this guidance also applies to non-ROA validation mechanics based on RPKI, e.g., ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/>, BGPSec <xref target="RFC8205"/>, and any other future validation mechanic built upon the RPKI.
     </t>
     <t>
-      The document acknowleges that specific operational requirements, e.g., a BGP implementation used by an operator still being dependent on annotating RPKI Validation State using BGP attributes, may necessitate the use of BGP path attributes to signal RPKI Validation State.
+      The document acknowleges that specific operational requirements, such as a BGP implementation used by an operator still being dependent on annotating RPKI Validation State using BGP attributes, may necessitate the use of BGP path attributes to signal RPKI Validation State.
       If this is the case, the dependent operator <bcp14>SHOULD</bcp14> ensure that these attributes are removed before announcing NLRI to EBGP neighbors.
     </t>
   </section>
@@ -136,7 +137,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <section title="ROA Issuance" anchor="outage-roa-issuance">
         <t>
           Large-Scale ROA issuance should be a comparatively rare event for individual networks.
-          However, several cases exist where issuance by individual operators or (malicious) coordinated issuance of ROAs by multiple operators may lead to a high route churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI Validation State.
+          However, several cases exist where issuance by individual operators or (malicious) coordinated issuance of ROAs by multiple operators may lead to a high route churn, triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal RPKI Validation State.
         </t>
         <t>
           Specifically:
@@ -144,13 +145,13 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         <ul spacing="normal">
           <li>
             When one large operator newly starts issuing ROAs for their netblocks, possibly by issuing one ROA with a long maxLength covering a large number of prefixes.
-            This may also occur when incorrectly migrating to minimally covering ROAs <xref target="RFC9319"/>, i.e., when the previous ROA is first revoked (see <xref target="outage-roa-revocation"/>) and the new ROAs are only issued after this revocation has been propagated, e.g., due to an operational error or bug in the issuance pipeline used by the operator.
+            This may also occur when incorrectly migrating to minimally covering ROAs <xref target="RFC9319"/>, i.e., when the previous ROA is first revoked (see <xref target="outage-roa-revocation"/>) and the new ROAs are only issued after this revocation has been propagated, e.g., due to an operational error or a bug in the issuance pipeline used by the operator.
           </li>
           <li>
             When multiple smaller operators coordinate to issue new ROAs at the same time.
           </li>
           <li>
-            When a CA has been unavailable or unable to publish for some time, but then publishes all updates at once, or--as unlikely as it is--if a key-rollover encounters issues.
+            When a CA has been unavailable or unable to publish for some time, but then publishes all updates at once, or - as unlikely as it is - if a key-rollover encounters issues.
           </li>
         </ul>
       </section>
@@ -176,13 +177,13 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       </section>
       <section title="Loss of Authoritative Validation Information" anchor="outage-validation-loss">
         <t>
-          Similar to the issuance/revocation of ROAs, the validation pipeline of an relaying party may encounter issues.
+          Similar to the issuance/revocation of ROAs, the validation pipeline of a relaying party may encounter issues.
           Issues may occur on the router side or on the validator side, with network connectivity issues having specific impact on either of the two.
         </t>
         <t>
           While, in general, implementations should not have bugs, operators should not make mistakes, and the network should be reliable, this is usually not the case in practice.
           Instead, the worst-case of sudden and unexpected, yet unintentional, loss of Validation State is an event that, however unlikely in a specific system, may and will happen.
-          Hence, systems should be resilliant in case of unexpected issues, and not further amplify issues by creating a BGP UPDATE storm.
+          Hence, systems should be resilient in case of unexpected issues, and should not further amplify issues by creating a BGP UPDATE storm.
         </t>
         <t>
           Below, we provide examples of events for both categories that may lead to the Validation State of routes in one or multiple routers of an operator changing from Valid to NotFound.
