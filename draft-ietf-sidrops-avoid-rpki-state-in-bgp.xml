@@ -82,14 +82,15 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <section title="Introduction">
 
     <t>
-			The Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> allows for validating received BGP routes.  
-			By means of this validation process, routes attain a Route Origin Validation (ROV) state.
-      In the past, some operators and vendors suggested to use BGP Communities <xref target="RFC1997"/> and <xref target="RFC8092"/> to annotate received routes with the local Validation State.
+      The Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> allows for validating received BGP routes.  
+      By means of this validation process, routes attain a Route Origin Validation (ROV) state.
+      In the past, some operators and vendors suggested to use BGP Communities <xref target="RFC1997"/> and <xref target="RFC8092"/> to annotate received routes with the local Validation State on a router.
       Some claim that the practice of signaling Validation States could be useful, for example to IBGP speakers, in order to avoid each IBGP speaker having to perform their own route origin validation.
     </t>
     <t>
-      However, annotating a route with a transitive attribute (based on the Validation State) means that BGP update messages have to be sent to every neighbor when the Validation State changes.
-      This means that when for example Route Origin Authorizations <xref target="RFC9582"/> are issued, or are revoked, or RPKI-To-Router <xref target="RFC8210"/> sessions are terminated, new BGP UPDATE messages will have to be sent for all routes that were previously annotated with a BGP Community associated with a different Validation State.
+      However, such a practice does not only conflict with core concepts of RPKI, but also threatens the stability of networks.
+      Annotating a route with a transitive attribute (based on the Validation State) means that BGP update messages have to be send to every neighbor when the Validation State changes.
+      This means that when, for example, Route Origin Authorizations <xref target="RFC9582"/> are issued, or are revoked, or RPKI-To-Router <xref target="RFC8210"/> sessions are terminated, new BGP UPDATE messages will have to be sent for all routes that were previously annotated with a BGP Community associated with a different Validation State.
       Furthermore, given that BGP Communities are a transitive attribute, such a BGP UPDATE might end up propagating through large portions of the Default-Free Zone (DFZ).
     </t>
     <t>
@@ -113,6 +114,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <t>
       This document discusses signaling locally significant RPKI Validation States to external BGP neighbors through transitive BGP attributes.
       This includes operator-specific BGP Communities to signal Validation States, as well as any current or future standardized well-known BGP Communities denoting Validation State (for example as specified for Extended BGP Communities in <xref target="RFC8097"/>).
+      Furthermore, it is <bcp14>RECOMMENDED</bcp14> that operators also consider this guidance within their network, i.e., between their IBGP speakers.
     </t>
     <t>
       The guidance in this document applies to all current and future transitive BGP attributes that may be implicitly or explicitly used to signal Validation State to neighbors.
@@ -301,7 +303,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         The study also demonstrated that the creation or removal of a ROA object triggered a chain of updates in a period of circa 1 hour following the change.
       </t>
       <t>
-        Such a high percentage of unneeded BGP updates constitutes a considerable level of noise, impacting the capacity of the global routing system while generating load on router CPUs and occupying more RAM than necessary.
+        Such a high percentage of unnecessary BGP updates constitutes a considerable level of noise, impacting the capacity of the global routing system while generating load on router CPUs and occupying more RAM than necessary.
         Keeping this information inside the realms of the single autonomous system would help reduce the burden on the rest of the global routing platform, reducing workload and noise.
       </t>
     </section>
