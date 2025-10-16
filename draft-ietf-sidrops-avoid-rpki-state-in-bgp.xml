@@ -84,11 +84,12 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <t>
 			The Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> allows for validating received BGP routes.  
 			By means of this validation process, routes attain a Route Origin Validation (ROV) state.
-      In the past, some operators and vendors suggested to use BGP Communities <xref target="RFC1997"/> and <xref target="RFC8092"/> to annotate received routes with the local Validation State.
-      Some claim that the practice of signaling Validation States could be useful, for example to IBGP speakers, in order to avoid each IBGP speaker having to perform their own route origin validation.
+      In the past, some operators and vendors suggested using BGP Communities <xref target="RFC1997"/> and <xref target="RFC8092"/> to annotate received routes with the local Validation State.
+      As it is a clear violation of <xref target="RFC7115"/>, such practices should never be used to, e.g., centralize RPKI validation.
+      Even for other use-cases, e.g., as the first step to identify possibly affected routes in case of a full ROV roll-out, these recommendations may introduce negative side-effects.
     </t>
     <t>
-      However, annotating a route with a transitive attribute (based on the Validation State) means that BGP update messages have to be sent to every neighbor when the Validation State changes.
+      Annotating a route with a transitive attribute (based on the Validation State) means that BGP update messages have to be sent to every neighbor when the Validation State changes.
       This means that when for example Route Origin Authorizations <xref target="RFC9582"/> are issued, or are revoked, or RPKI-To-Router <xref target="RFC8210"/> sessions are terminated, new BGP UPDATE messages will have to be sent for all routes that were previously annotated with a BGP Community associated with a different Validation State.
       Furthermore, given that BGP Communities are a transitive attribute, such a BGP UPDATE might end up propagating through large portions of the Default-Free Zone (DFZ).
     </t>
@@ -392,6 +393,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 <back>
   <references title="Normative References">
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7115.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
   </references>
 
