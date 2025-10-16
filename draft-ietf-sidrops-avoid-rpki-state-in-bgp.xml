@@ -114,6 +114,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <t>
       This document discusses signaling locally significant RPKI Validation States to external BGP neighbors through transitive BGP attributes.
       This includes operator-specific BGP Communities to signal Validation States, as well as any current or future standardized well-known BGP Communities denoting Validation State (for example as specified for Extended BGP Communities in <xref target="RFC8097"/>).
+      Furthermore, it is <bcp14>RECOMMENDED</bcp14> that operators also consider this guidance within their network, i.e., between their IBGP speakers.
     </t>
     <t>
       The guidance in this document applies to all current and future transitive BGP attributes that may be implicitly or explicitly used to signal Validation State to neighbors.
