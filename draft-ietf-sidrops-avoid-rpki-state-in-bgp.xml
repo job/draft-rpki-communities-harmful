@@ -71,7 +71,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       Operators <bcp14>SHOULD</bcp14> ensure Validation States are not signaled in transitive BGP Path Attributes.
-      Specifically, Operators <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state into BGP Communities.
+      Specifically, Operators <bcp14>SHOULD NOT</bcp14> associate Prefix Origin Validation state with BGP routes using transitive BGP Communities.
     </t>
   </abstract>
   
@@ -95,7 +95,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       Hence, this document provides guidance to avoid carrying RPKI-derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes <xref target="RFC4271" section="5"/>.
-      Specifically, operators <bcp14>SHOULD NOT</bcp14> group BGP routes by their Prefix Origin Validation state <xref target="RFC6811"/> into BGP Communities <xref target="RFC1997"/> <xref target="RFC8092"/>.
+      Specifically, Operators <bcp14>SHOULD NOT</bcp14> associate Prefix Origin Validation state <xref target="RFC6811"/> with BGP routes using transitive BGP Communities (<xref target="RFC1997"/>, <xref target="RFC4360"/>, <xref target="RFC8092"/>).
       If local technical requirements or the implementation used by an operator necessitates the use of transitive attributes to signal RPKI Validation State, the operator <bcp14>SHOULD</bcp14> ensure that these attributes are removed in NLRI announced to EBGP neighbors.
       Avoiding the use of BGP Communities to signal RPKI Validation States prevents BGP UPDATE messages from being needlessly flooded into the global Internet routing system.
     </t>
@@ -381,9 +381,10 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
     <t>
       The authors would like to thank
-      <contact fullname="Aaron Groom"/>
-      and
-      <contact fullname="Wouter Prins"/>
+      <contact fullname="Aaron Groom"/>,
+      <contact fullname="Wouter Prins"/>,
+      <contact fullname="Gunnar Guðvarðarson"/>, and
+      <contact fullname="Nick Hilliard"/>
       for their helpful review of this document.
     </t>
 
@@ -400,6 +401,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <references title="Informative References">
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.1997.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4271.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4360.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6480.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6811.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8092.xml"/>
