@@ -5,3 +5,6 @@ all: $(NAME).xml
 
 clean:
 	rm -f *.html *.txt
+
+www:
+	cp $(NAME).xml $(NAME).html $(NAME).txt ~/Downloads/

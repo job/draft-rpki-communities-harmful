@@ -13,7 +13,7 @@
    category="bcp"
    consensus="true"
    submissionType="IETF"
-   docName="draft-ietf-sidrops-avoid-rpki-state-in-bgp-03"
+   docName="draft-ietf-sidrops-avoid-rpki-state-in-bgp-04"
    ipr="trust200902">
 <!-- For consideration: updates="7115" -->
   
@@ -89,7 +89,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       However, such a practice does not only conflict with core concepts of RPKI, but also threatens the stability of networks.
-      Annotating a route with a transitive attribute (based on the Validation State) means that BGP update messages have to be send to every neighbor when the Validation State changes.
+      Annotating a route with a transitive attribute (based on the Validation State) means that BGP update messages have to be sent to every neighbor when the Validation State changes.
       This means that when, for example, Route Origin Authorizations <xref target="RFC9582"/> are issued, or are revoked, or RPKI-To-Router <xref target="RFC8210"/> sessions are terminated, new BGP UPDATE messages will have to be sent for all routes that were previously annotated with a BGP Community associated with a different Validation State.
       Furthermore, given that BGP Communities are a transitive attribute, such a BGP UPDATE might end up propagating through large portions of the Default-Free Zone (DFZ).
     </t>
@@ -286,10 +286,10 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
           AS65536 will ingest and propagate these BGP UPDATES down its own cone as well.
         </t>
         <t>
-          When, rughly 300 seconds later, AS65536 fails to retrieve Validation State as well, the community set by AS65536 will again change for ROA covered routes, and it will again trigger a BGP UPDATE flood and propagate this down its cone.
+          When, roughly 300 seconds later, AS65536 fails to retrieve Validation State as well, the community set by AS65536 will again change for ROA covered routes, and it will again trigger a BGP UPDATE flood and propagate this down its cone.
         </t>
         <t>
-          Even if either or both of AS65536 and AS65537 use a cache after RTR expirery, the underlying issue would not change, assuming the RTR service downtime spans beyond the cache TTL.
+          Even if either or both of AS65536 and AS65537 use a cache after RTR expiry, the underlying issue would not change, assuming the RTR service downtime spans beyond the cache TTL.
           Assuming a 30 minute cache TTL, both ASes using a cache would only move the cascading event 30 minutes later.
           If only one of the two uses a cache, the two flood events get moved further apart.
           However, the overall issue of two independent floods due to one event remains.
@@ -316,8 +316,8 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <t>
         For EBGP, given they are not signed, they provide even less information to other parties except introspection into an ASes internal validation mechanics.
         Crucially, they provide no actionable information for BGP neighbors.
-        If an AS validates and enforces based on RPKI, Invalid routes should never be imported and, hence, never be send to neighbors.
-        Hence, the argument that adding Validation State to communities enables, e.g., downstreams to filter RPKI Invalid routes is mute, as the only routes a downstream should see are NotFound and Valid.
+        If an AS validates and enforces based on RPKI, Invalid routes should never be imported and, hence, never be sent to neighbors.
+        Hence, the argument that adding Validation State to communities enables, e.g., downstreams to filter RPKI Invalid routes is moot, as the only routes a downstream should see are NotFound and Valid.
         Furthermore, in any case, the operators <bcp14>SHOULD</bcp14> run their own validation infrastructure and not rely on centralized services or attributes communicated by their neighbors.
         Everything else circumvents the purpose of RPKI.
       </t>
@@ -383,8 +383,10 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       The authors would like to thank
       <contact fullname="Aaron Groom"/>,
       <contact fullname="Wouter Prins"/>,
-      <contact fullname="Gunnar Guðvarðarson"/>, and
-      <contact fullname="Nick Hilliard"/>
+      <contact fullname="Gunnar Guðvarðarson"/>,
+      <contact fullname="Nick Hilliard"/>,
+      and
+      <contact fullname="William McCall"/>
       for their helpful review of this document.
     </t>
 
