@@ -121,7 +121,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       Similarly, this guidance also applies to non-ROA validation mechanics based on RPKI, e.g., ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/>, BGPSec <xref target="RFC8205"/>, and any other future validation mechanic built upon the RPKI.
     </t>
     <t>
-      The document acknowleges that specific operational requirements, such as a BGP implementation used by an operator still being dependent on annotating RPKI Validation State using BGP attributes, may necessitate the use of BGP path attributes to signal RPKI Validation State.
+      The document acknowledges that specific operational requirements, such as a BGP implementation used by an operator still being dependent on annotating RPKI Validation State using BGP attributes, may necessitate the use of BGP path attributes to signal RPKI Validation State.
       If this is the case, the dependent operator <bcp14>SHOULD</bcp14> ensure that these attributes are removed before announcing NLRI to EBGP neighbors.
     </t>
   </section>
@@ -226,11 +226,11 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
             <li>
               An RTR client may lose network connectivity to the RTR service.
               While, in general, caches should prevent this from having immediate impact, an RTR clients behavior in case of a flapping network connection with frequent interruptions may lead to unexpected behavior and cache invalidation.
-              Similarly, after cache expirery, routes will change from Valid to NotFound.
+              Similarly, after cache expiry, routes will change from Valid to NotFound.
             </li>
             <li>
               As an extension of the previous point, multiple operators might be using one central RTR service hosted by an external party, or depend on a similar validator, which becomes unavailable, e.g., due to maintenance or an outage.
-              If local instances are not able to handle loss of this external service without changing Validation State, i.e., do not serve from cache or the outage extends beyond cache expirery, routes will change their Validation State from Valid to NotFound
+              If local instances are not able to handle loss of this external service without changing Validation State, i.e., do not serve from cache or the outage extends beyond cache expiry, routes will change their Validation State from Valid to NotFound
               Naturally, the negative impact in such a case is significantly larger in comparison to each operator running their own validator.
             </li>
           </ul>
@@ -274,7 +274,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
       <section title="Cascading of BGP UPDATES" anchor="cascade">
         <t>
-          For events that are not specific to one operator, e.g., a malicious widthdrawel of a ROA, loss of a major CA, or an unexpected downtime of a major centralized RTR service, events can also cascade for ASes annotating Validation State using BGP communities.
+          For events that are not specific to one operator, e.g., a malicious withdrawal of a ROA, loss of a major CA, or an unexpected downtime of a major centralized RTR service, events can also cascade for ASes annotating Validation State using BGP communities.
           Given that routers' view of the RPKI with RTR are only loosely consistent, update messages may cascade, i.e., one event affecting Validation State may actually trigger multiple subsequent BGP UPDATE floods.
         </t>
         <t>
@@ -348,13 +348,13 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   <section title="Security Considerations">
     <t>
-      BGP is not guranteed to converge, and the view on the RPKI within an individual administrative domain is only loosely consistent.
-      External validation state anotated in a received NLRI may either depend on a different view on the RPKI than the one in the local administrative domain, or the NLRI may be several hours old itself.
+      BGP is not guaranteed to converge, and the view on the RPKI within an individual administrative domain is only loosely consistent.
+      External validation state annotated in a received NLRI may either depend on a different view on the RPKI than the one in the local administrative domain, or the NLRI may be several hours old itself.
       Hence, the Validation State of a received announcement can only have local scope.
     </t>
     <t>
       Additionally, the use of transitive attributes to signal RPKI Validation State may enable attackers to cause notable route churn.
-      This can be accomplished by an attacker issuing and withdrawing, e.g., ROAs for their prefixes, or by the attacker continuously altering transitive attributes used to signal RPKI Validation State for NLRI they readvertise.
+      This can be accomplished by an attacker issuing and withdrawing, e.g., ROAs for their prefixes, or by the attacker continuously altering transitive attributes used to signal RPKI Validation State for NLRI they re-advertise.
       The latter is possible as NLRI carry no information allowing an ingesting party to validate the integrity of transitive BGP attributes.
     </t>
     <t>
@@ -367,7 +367,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <!-- Clarified what 'not accept' means here;
            Still, this mildly collides with the 'do not touch' guidance in the bgp-opsec-upd draft.
            Given the formulation there, though, I believe that the above would be sensible guidance, i.e., remove those attributes.
-           Not sure whether it is necessary to specify idempotency.-->
+           Not sure whether it is necessary to specify impotence.-->
     </t>
   </section>
 
