@@ -367,7 +367,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <!-- Clarified what 'not accept' means here;
            Still, this mildly collides with the 'do not touch' guidance in the bgp-opsec-upd draft.
            Given the formulation there, though, I believe that the above would be sensible guidance, i.e., remove those attributes.
-           Not sure whether it is necessary to specify impotence.-->
+           Not sure whether it is necessary to specify idempotence.-->
     </t>
   </section>
 
