@@ -66,7 +66,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   <abstract>
     <t>
-      This document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes.
+      This document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) derived Validation States in transitive Border Gateway Protocol (BGP) Path Attributes.
       Annotating routes with transitive attributes signaling Validation State may cause needless flooding of BGP UPDATE messages through the global Internet routing system, for example when Route Origin Authorizations (ROAs) are issued, or are revoked, or when RPKI-To-Router sessions are terminated.
     </t>
     <t>
@@ -94,7 +94,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       Furthermore, given that BGP Communities are a transitive attribute, such a BGP UPDATE might end up propagating through large portions of the Default-Free Zone (DFZ).
     </t>
     <t>
-      Hence, this document provides guidance to avoid carrying RPKI-derived Validation States in Transitive Border Gateway Protocol (BGP) Path Attributes <xref target="RFC4271" section="5"/>.
+      Hence, this document provides guidance to avoid carrying RPKI-derived Validation States in transitive Border Gateway Protocol (BGP) Path Attributes <xref target="RFC4271" section="5"/>.
       Specifically, Operators <bcp14>SHOULD NOT</bcp14> associate Prefix Origin Validation state <xref target="RFC6811"/> with BGP routes using transitive BGP Communities (<xref target="RFC1997"/>, <xref target="RFC4360"/>, <xref target="RFC8092"/>).
       If local technical requirements or the implementation used by an operator necessitates the use of transitive attributes to signal RPKI Validation State, the operator <bcp14>SHOULD</bcp14> ensure that these attributes are removed in NLRI announced to EBGP neighbors.
       Depending on the supported functionality of the BGP implementations in use in a given AS, removal of the aforementioned attributes may not be consistently possible across the AS, leading to the conditions this best practises document is intended to discuss.
