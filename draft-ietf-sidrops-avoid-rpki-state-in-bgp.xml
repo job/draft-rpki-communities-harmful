@@ -270,7 +270,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
           If that operator annotates Validation State using BGP communities, the operator will send updates for all routes that changed from Valid to NotFound to its downstreams, as well as updates for routes received from downstreams to its upstreams.
         </t>
         <t>
-          Following an RPKI service affecting <xref target="outage">outage</xref>, given that more than half the global Internet routing table with close to 1,000,000 prefixes <xref target="CIDR Report"/> nowadays is covered by RPKI ROAs <xref target="NIST"/>, such convergence events represent a significant burden.
+          Following an RPKI service affecting <xref target="outage">outage</xref>, given that, at the time of writing, more than half the global Internet routing table <xref target="CIDR Report"/> nowadays is covered by RPKI ROAs <xref target="NIST"/>, such convergence events represent a significant burden.
           See <xref target="How-to-break"/> for an elaboration on this phenomenon.
         </t>
       </section>
@@ -376,7 +376,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   <section title="IANA Considerations">
     <t>
-      None.
+      This document does not make any request to IANA.
     </t>
   </section>
 
@@ -390,8 +390,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <contact fullname="Nick Hilliard"/>,
       <contact fullname="William McCall"/>,
       <contact fullname="Theo Buehler"/>,
+      <contact fullname="Jeffrey Haas"/>,
       and
-      <contact fullname="Jeffrey Haas"/>
+      <contact fullname="Luigi Iannone"/>
       for their helpful review of this document.
     </t>
 
