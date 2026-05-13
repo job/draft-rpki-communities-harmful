@@ -70,8 +70,8 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       Annotating routes with transitive attributes signaling Validation State may cause needless flooding of BGP UPDATE messages through the global Internet routing system, for example when Route Origin Authorizations (ROAs) are issued, or are revoked, or when RPKI-To-Router sessions are terminated.
     </t>
     <t>
-      Operators <bcp14>SHOULD</bcp14> ensure Validation States are not signaled in transitive BGP Path Attributes.
-      Specifically, Operators <bcp14>SHOULD NOT</bcp14> associate Prefix Origin Validation state with BGP routes using transitive BGP Communities.
+      Operators should ensure Validation States are not signaled in transitive BGP Path Attributes.
+      Specifically, Operators should not associate Prefix Origin Validation state with BGP routes using transitive BGP Communities.
     </t>
   </abstract>
   
