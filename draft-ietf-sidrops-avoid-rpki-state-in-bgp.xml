@@ -92,7 +92,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       Annotating a route with a transitive attribute (based on validation states) means that BGP UPDATE messages have to be sent to every neighbor when the aforementioned validation states changes.
-      This means that when, for example, Route Origin Authorizations (ROAs) <xref target="RFC9582"/> are issued, or are revoked, or RPKI-To-Router (RTR) <xref target="RFC8210"/> sessions are terminated, new BGP UPDATE messages will have to be send for all routes that were previously annotated with a BGP Community associated with a different validation state.
+      This means that when, for example, Route Origin Authorizations (ROAs) <xref target="RFC9582"/> are issued, or are revoked, or RPKI-To-Router (RTR) <xref target="RFC8210"/> sessions are terminated, new BGP UPDATE messages will have to be sent for all routes that were previously annotated with a BGP Community associated with a different validation state.
       Furthermore, given that BGP Communities are a transitive attribute, such a BGP UPDATE might end up propagating through large portions of the Default-Free Zone (DFZ).
     </t>
     <t>
@@ -347,32 +347,28 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       The document acknowledges that specific operational requirements, such as a BGP implementation used by an operator still being dependent on annotating RPKI-derived validation states using BGP attributes, may necessitate the use of BGP path attributes to signal validation states between BGP speakers.
-      If this is the case, the dependent operator <bcp14>MUST</bcp14> ensure that these attributes are removed before announcing NLRI to EBGP neighbors.
+      If this is the case, the dependent operator <bcp14>MUST</bcp14> ensure that these attributes are removed before announcing Network Layer Reachability Information (NLRI) to EBGP neighbors.
       Depending on the supported functionality of the BGP implementations in use in a given AS, removal of the aforementioned attributes may not be consistently possible across the AS, leading to the conditions this document is intended to discuss.
     </t>
   </section>
 
   <section title="Operational Considerations">
     <t>
-      This document provides guidance to prevent using BGP UPDATE messages to carry RPKI Validate State.
-      Following this guidance allows operators to enhance the stability of local routing tables and the global Internet routing system, in particular. 
+      BGP Routers participating in the global Internet routing system may not be equipped to handle BGP message churn in all directions at global scale, especially if routing churn cascades, persists, or repeats periodically.
+      Following the <xref target="guidance"/> allows operators to enhance the stability of local routing tables and the global Internet routing system, in particular. 
     </t>
   </section> 
 
   <section title="Security Considerations">
     <t>
-      BGP is not guaranteed to converge, and the view on the RPKI within an individual administrative domain is only loosely consistent.
+      BGP is not guaranteed to converge, and the view on the global RPKI within an individual administrative domain is only loosely consistent.
       External validation states annotated in a received NLRI may either depend on a different view on the RPKI than the one in the local administrative domain, or the NLRI may be several hours old itself.
-      Hence, any validation states contained in a received route announcement only have significance in the sender's own local scope.
+      Hence, any purported validation states contained in a received route announcement would only have significance in the sender's own local scope.
     </t>
     <t>
       Additionally, the use of transitive attributes to signal RPKI-derived validation states may enable attackers to cause notable route churn.
-      This can be accomplished by an attacker issuing and withdrawing, e.g., ROAs for their prefixes, or by the attacker continuously altering transitive attributes used to signal RPKI-derived validation states for NLRI they re-advertise.
-      The latter is possible as NLRI carry no information allowing an ingesting party to validate the integrity of transitive BGP attributes.
-    </t>
-    <t>
-      DFZ routers may not be equipped to handle BGP message churn in all directions at global scale, especially if aforementioned routing churn cascades, persists, or repeats periodically.
-      Adhering to the <xref target="guidance"/> helps prevent such churn.
+      This can be accomplished by an attacker issuing and withdrawing signed objects (e.g., ROAs for their prefixes), or by the attacker continuously altering transitive attributes used to signal RPKI-derived validation states for NLRI they re-advertise.
+      The latter is possible as NLRI contain no information allowing an ingesting party to validate the authenticity and integrity of the aforementioned transitive BGP attributes.
     </t>
   </section>
 
@@ -394,8 +390,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <contact fullname="Theo Buehler"/>,
       <contact fullname="Jeffrey Haas"/>,
       <contact fullname="Luigi Iannone"/>,
+      <contact fullname="Mohamed Bboucadair"/>,
       and
-      <contact fullname="Mohamed Bboucadair"/>
+      <contact fullname="Scott Kelly"/>,
       for their helpful review of this document.
     </t>
 
