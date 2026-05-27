@@ -355,7 +355,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <section title="Operational Considerations">
     <t>
       BGP Routers participating in the global Internet routing system may not be equipped to handle BGP message churn in all directions at global scale, especially if routing churn cascades, persists, or repeats periodically.
-      Following the <xref target="guidance"/> allows operators to enhance the stability of local routing tables and the global Internet routing system, in particular. 
+      Following the guidance in <xref target="guidance"/> allows operators to enhance the stability of local routing tables and the global Internet routing system, in particular. 
     </t>
   </section> 
 
