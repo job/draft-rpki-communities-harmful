@@ -143,7 +143,8 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         <ul spacing="normal">
           <li>
             When an operator issues new ROAs for their netblocks, possibly by issuing one ROA with a non-minimal maxLength (<xref target="RFC9582" section="4.3.2.2"/>) covering a large number of prefixes.
-            This may also occur when incorrectly migrating to minimally covering ROAs (<xref target="RFC9319"/>), i.e., when the previous ROA is first revoked (see <xref target="outage-roa-revocation"/>) and the new ROAs are only issued after this revocation has been propagated, e.g., due to an operational error or a bug in the issuance pipeline used by the operator.
+            This may also occur when incorrectly migrating to minimally covering ROAs (<xref target="RFC9319"/>).
+            One example of such a circumstance is when the previous ROA is first revoked (see <xref target="outage-roa-revocation"/>) and the new ROAs are only issued after this revocation has been propagated (due to an operational error or a bug in the issuance pipeline).
           </li>
           <li>
             When multiple Certification Authorities (CAs) coordinate to issue new ROAs at the same time.
@@ -163,7 +164,8 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         </t>
         <ul spacing="normal">
           <li>
-            When one large operator revokes all ROAs for their netblocks at once, for example, when migrating to minimally covering ROAs <xref target="RFC9319"/>, or when revoking one ROA with a long maxLength covering a large number of prefixes.
+            When one large operator revokes all ROAs for their netblocks at once.
+            This can occur when migrating to minimally covering ROAs <xref target="RFC9319"/>, or when revoking one ROA with a long maxLength covering a large number of prefixes.
           </li>
           <li>
             When multiple CAs coordinate to revoke ROAs at the same time.
@@ -198,10 +200,12 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
             </li>
             <li>
               A cache may crash due to bugs when ingesting unexpected data from the RPKI, or run into performance issues due to insufficient available memory or limited I/O performance on the host.
-              In the worst case, especially memory issues, can lead to a flapping cache, e.g., when the system runs out of memory after a few minutes of transmitting validated payloads to routers.
+              In the worst case, especially memory issues, can lead to a flapping cache.
+              For example, when the system runs out of memory after a few minutes of transmitting validated payloads to routers.
             </li>
             <li>
-              Validation state may seemingly lapse due to issues with time synchronization if, e.g., the clock of the cache diverts significantly, starting to consider CA's certificates invalid.
+              Validation state may lapse due to issues with time synchronization.
+              An example of problems with time synchronization is if the clock of the cache diverts significantly, causing certificates to be considered invalid.
             </li>
             <li>
               The cache may lose its network connectivity in general, or to specific CAs.
@@ -216,7 +220,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
           <ul spacing="normal">
             <li>
               An RTR client, especially when implemented as a dedicated daemon, may fail to start, or terminate when receiving unexpected data.
-              Especially when this leads to a flapping client, e.g., due to a bug in the handling of incremental updates leading to a crash, while the initial retrieval is successful, this will lead to flapping between routes being <tt>Valid</tt> and <tt>NotFound</tt>.
+              Especially when this leads to a flapping client.
+              Flapping may be caused by a bug in the handling of incremental updates leading to a crash.
+              While the initial retrieval is successful, this will lead to flapping between routes being <tt>Valid</tt> and <tt>NotFound</tt>.
             </li>
             <li>
               A misconfiguration may impact a router's ability to communicate with the RTR service.
@@ -224,13 +230,15 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
             </li>
             <li>
               An RTR client may lose network connectivity to the RTR service.
-              While, in general, caches should prevent this from having immediate impact, an RTR client's behavior in case of a flapping network connection with frequent interruptions may lead to unexpected behavior and cache invalidation.
+              Generally, caches should prevent this event causing an immediate impact to the RTR service.
+              However, a RTR client's behavior in case of a flapping network connection with frequent interruptions may lead to unexpected behavior and cache invalidation.
               Similarly, after cache expiry, routes will change from <tt>Valid</tt> to <tt>NotFound</tt>.
             </li>
             <li>
-              As an extension of the previous point, multiple operators might be using one central RTR service hosted by an external party, or depend on a similar cache, which becomes unavailable, e.g., due to maintenance or an outage.
-              If local instances are not able to handle loss of this external service without changing validation states, i.e., do not serve from cache or the outage extends beyond the expiry of cached information, routes will change local validation states from <tt>Valid</tt> to <tt>NotFound</tt>.
-              Naturally, the negative impact in such a case is significantly larger in comparison to each operator running their own cache.
+              As an extension of the previous point, multiple operators might be using one central RTR service hosted by an external party, or depend on a similar cache, which becomes unavailable (e.g., due to maintenance or an outage).
+              If local instances are not able to handle loss of this external service without changing validation states, routes will change local validation states from <tt>Valid</tt> to <tt>NotFound</tt>.
+              (Loss of external service can be handled by serving from cache, but even this technique fails if the cached information expires.)
+              Naturally, the negative impact in such a case is significantly larger in comparison to each operator runs their own cache.
             </li>
           </ul>
         </section>
@@ -238,7 +246,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <section title="Outage Scenario Summary" anchor="outage-summary">
         <t>
           The above non-exhaustive listing suggests that issues in general operations, CA operations, and RPKI cache implementations simply are unavoidable.
-          Hence, Operators have to plan and design accordingly.
+          Hence, operators have to plan and design accordingly.
         </t>
       </section>
     </section>
@@ -273,16 +281,17 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
       <section title="Cascading of BGP UPDATE Messages" anchor="cascade">
         <t>
-          For events that are not specific to one operator, e.g., a malicious withdrawal of a ROA, loss of a major CA, or an unexpected downtime of a major centralized RTR service, events can also cascade for ASes annotating validation states using BGP communities.
-          Given that routers' view of the RPKI with RTR are only loosely consistent, BGP UPDATE messages may cascade, i.e., one event affecting validation states may actually trigger multiple subsequent BGP UPDATE floods.
+          Some events that are not specific to one operator can also cascade for ASes annotating validation states using BGP communities.
+          These events might include a malicious withdrawal of a ROA, loss of a major CA, or an unexpected downtime of a major centralized RTR service.
+          Given that routers' view of the RPKI with RTR are only loosely consistent, BGP UPDATE messages may cascade - so that one event affecting validation states may actually trigger multiple subsequent BGP UPDATE floods.
         </t>
         <t>
           Assume, for example, that AS65536 is a customer of AS65537 (both annotating validation states with BGP Communities and using a 300 second RTR cycle), and a centralized RTR service fails.
           In the example, AS65536 has their routers updated from that cache a second before the service went down, while AS65537 was due for a refresh a second thereafter.
         </t>
         <t>
-          This means that a second after the RTR service went down, AS65537 will trigger a BGP UPDATE flood down its cone.
-          AS65536 will ingest and propagate these BGP UPDATE messages down its own cone as well.
+          This means that a second after the RTR service went down, AS65537 will trigger a BGP UPDATE flood towards its customers cone.
+          AS65536 will ingest and propagate these BGP UPDATE messages towards its own customer cone as well.
         </t>
         <t>
           When, roughly 300 seconds later, AS65536 fails to disseminate validated payload information as well, the community set by AS65536 will again change for ROA covered routes, and it will again trigger a BGP UPDATE flood and propagate further on.
@@ -316,7 +325,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         For EBGP, given they are not signed, they provide even less information to other parties except introspection into an ASes internal validation mechanics.
         Crucially, they provide no actionable information for BGP neighbors.
         If an AS validates and enforces based on RPKI, Invalid routes should never be imported and, hence, never be sent to neighbors.
-        Hence, the argument that exposing validation states through communities enables, for example, customers to filter RPKI Invalid routes is moot, as the only routes a customer should see are <tt>NotFound</tt> and <tt>Valid</tt>.
+        Hence, the argument that exposing validation states through communities enables, for example, customers to filter RPKI Invalid routes is moot, as the only routes a customer should see are NotFound and Valid.
       </t>
     </section>
 
@@ -335,7 +344,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         No effect on the age of a BGP route when a ROA or ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/> is issued or revoked.
       </li>
       <li>
-        Avoids having to resend, e.g., more than 500,000 BGP routes towards BGP neighbors (for the own cone to peers and providers, for the full table towards customers) if the RPKI cache crashes and RTR sessions are terminated, or if flaps in validation are caused by other events.
+        Avoids having to resend, e.g., more than 500,000 BGP routes towards BGP neighbors (for the own customer cone towards peers and providers, for the full table towards customers) if the RPKI cache crashes and RTR sessions are terminated, or if flaps in validation are caused by other events.
       </li>
     </ul>
   </section>
@@ -391,8 +400,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <contact fullname="Jeffrey Haas"/>,
       <contact fullname="Luigi Iannone"/>,
       <contact fullname="Mohamed Boucadair"/>,
-      and
       <contact fullname="Scott Kelly"/>,
+      and
+      <contact fullname="Susan Hares"/>
       for their helpful review of this document.
     </t>
 
