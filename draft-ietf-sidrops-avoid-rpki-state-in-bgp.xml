@@ -66,11 +66,11 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   <abstract>
     <t>
-      This document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) derived validation states in transitive Border Gateway Protocol (BGP) Path Attributes.
-      Annotating routes with transitive attributes signaling validation states may cause needless flooding of BGP UPDATE messages through the global Internet routing system, for example when Route Origin Authorizations (ROAs) are issued, or are revoked, or when RPKI-To-Router sessions are terminated.
+      This document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) derived validation states in Border Gateway Protocol (BGP) Path Attributes carried across external BGP sessions.
+      Annotating routes with BGP Path Attributes carried across external BGP sessions signaling validation states may cause needless flooding of BGP UPDATE messages through the global Internet routing system, for example when Route Origin Authorizations (ROAs) are issued, or are revoked, or when RPKI-To-Router sessions are terminated.
     </t>
     <t>
-      Operators should ensure RPKI-derived validation states are not signaled in transitive BGP Path Attributes.
+      Operators should ensure RPKI-derived validation states are not signaled in BGP Path Attributes carried across external BGP sessions.
       Specifically, Operators should not associate Prefix Origin Validation state with BGP routes using transitive BGP Communities.
     </t>
   </abstract>
@@ -91,13 +91,13 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       However, such a practice does not only conflict with core concepts of RPKI, but also threatens the stability of networks.
     </t>
     <t>
-      Annotating a route with a transitive attribute (based on validation states) means that BGP UPDATE messages have to be sent to every neighbor when the aforementioned validation states changes.
+      Annotating a route with a BGP Path Attribute carried across EBGP session (based on validation states) means that BGP UPDATE messages have to be sent to every neighbor when the aforementioned validation states changes.
       This means that when, for example, Route Origin Authorizations (ROAs) <xref target="RFC9582"/> are issued, or are revoked, or RPKI-To-Router (RTR) <xref target="RFC8210"/> sessions are terminated, new BGP UPDATE messages will have to be sent for all routes that were previously annotated with a BGP Community associated with a different validation state.
-      Furthermore, given that BGP Communities are a transitive attribute, such a BGP UPDATE might end up propagating through large portions of the Default-Free Zone (DFZ).
+      Furthermore, given that many BGP Communities are carried across EBGP sessions, such a BGP UPDATE might end up propagating through large portions of the Default-Free Zone (DFZ).
     </t>
     <t>
-      Hence, this document provides guidance (<xref target="guidance"/>) to avoid carrying RPKI-derived validation states in transitive Border Gateway Protocol (BGP) Path Attributes (<xref target="RFC4271" section="5"/>).
-      Specifically, Operators should not associate BGP Prefix Origin Validation results <xref target="RFC6811"/> with BGP routes using transitive BGP Communities (<xref target="RFC1997"/>, <xref target="RFC4360"/>, <xref target="RFC8092"/>).      
+      Hence, this document provides guidance (<xref target="guidance"/>) to avoid carrying RPKI-derived validation states in Border Gateway Protocol (BGP) Path Attributes carried across external BGP sessions.
+      Specifically, Operators should not associate BGP Prefix Origin Validation results <xref target="RFC6811"/> with BGP routes using transitive BGP Communities (<xref target="RFC1997"/> BGP Communities, <xref target="RFC4360"/> transitive Extended Communities, <xref target="RFC8092"/> Large BGP Communities).
       Furthermore, this document contains data on the measured current impact of BGP Communities used to signal validation states.
     </t>
     <t>
@@ -113,20 +113,20 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   <section title="Scope" anchor="scope">
     <t>
-      This document discusses signaling locally significant RPKI validation states to EBGP neighbors through transitive BGP attributes.
+      This document discusses signaling locally significant RPKI validation states through BGP Path Attributes propagated to EBGP neighbors.
       This includes operator-specific BGP Communities to signal validation states, as well as any current or future standardized well-known BGP Communities denoting validation states.
       As BGP message churn is associated with internal signaling changes, it is <bcp14>RECOMMENDED</bcp14> that operators also consider the guidance (<xref target="guidance"/>) within their network, i.e., between their IBGP speakers.
     </t>
     <t>
-      The guidance in this document applies to all current and future transitive BGP attributes that may be implicitly or explicitly used to signal validation states to neighbors.
-      Similarly, this guidance also applies to non-ROA validation mechanics based on RPKI, e.g., Autonomous System Provider Authorization (ASPA) <xref target="I-D.ietf-sidrops-aspa-profile"/>, BGPsec <xref target="RFC8205"/>, and any other future validation mechanic built upon the RPKI.
+      The guidance in this document applies to all current and future BGP Path Attributes that may be implicitly or explicitly used to signal validation states to EBGP neighbors.
+      Similarly, this guidance also applies to non-ROA validation mechanics based on RPKI; e.g., Autonomous System Provider Authorization (ASPA) <xref target="I-D.ietf-sidrops-aspa-profile"/>, BGPsec <xref target="RFC8205"/>, and any other future validation mechanic built upon the RPKI.
     </t>
   </section>
 
-  <section title="Risks of Signaling Validation State With Transitive Attributes" anchor="signaling-risks">
+  <section title="Risks of Signaling Validation State Transitively to EBGP Neighbors" anchor="signaling-risks">
     <t>
-      This section outlines the risks of signaling RPKI-derived validation states using BGP Communities.
-      While the current description is specific to BGP communities, the observations hold similar for all transitive attributes that may be added to BGP routes.
+      This section outlines the risks of signaling RPKI-derived validation states using transitive BGP Communities.
+      While the current description is specific to BGP communities, the observations hold similar for all attributes that may be added to BGP routes and propagated to EBGP neighbors.
     </t>
     <section title="Triggers for Large-Scale Validation Changes" anchor="outage">
       <t>
@@ -135,7 +135,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <section title="ROA Issuance" anchor="outage-roa-issuance">
         <t>
           Large-Scale ROA issuance events should be a comparatively rare event for individual networks.
-          However, several cases exist where issuance by individual operators or (malicious) coordinated issuance of ROAs by multiple operators may lead to a high route churn, triggering a continuous flow of BGP UPDATE messages caused by operators using transitive BGP attributes to signal validation states.
+          However, several cases exist where issuance by individual operators or (malicious) coordinated issuance of ROAs by multiple operators may lead to a high route churn, triggering a continuous flow of BGP UPDATE messages caused by operators using BGP Path Attributes carried across EBGP sessions to signal validation states.
         </t>
         <t>
           Specifically:
@@ -157,7 +157,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <section title="ROA Revocation" anchor="outage-roa-revocation">
         <t>
           Large-Scale ROA revocation should be a comparatively rare event for individual networks.
-          However, several cases exist where revocations by individual operators or (malicious) coordinated revocation of ROAs by multiple operators may lead to a high route churn triggering a continuous flow of BGP Update messages caused by operators using transitive BGP attributes to signal validation states.
+          However, several cases exist where revocations by individual operators or (malicious) coordinated revocation of ROAs by multiple operators may lead to a high route churn triggering a continuous flow of BGP Update messages caused by operators to signal validation states using BGP Path Attributes carried across EBGP sessions.
         </t>
         <t>
           Specifically:
@@ -253,6 +253,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
     <section title="Scaling issues">
       <t>
+	<!-- XXX JMH - "Prefix Origin Validation result" probably needs to be a more generic "RPKI validation" result to include ASPA and future items. I know you're trying to discuss the existing marking for ROAs, but the same considerations apply for any validation.  The "notfound" state, appropriate here, might also be too tightly bound to current validation schemes. -->
         For each change in the validation state of a route, an Autonomous System (AS) in which the local routing policy sets a BGP Community based on the BGP Prefix Origin Validation result, routers would need to send BGP UPDATE messages for more than half of the global Internet routing table if the validation state changes to <tt>NotFound</tt>.
         The same, reversed case, would be true for every new ROA created by the address space holders, whereas a new BGP UPDATE would be generated, as the validation state would change to <tt>Valid</tt>.
       </t>
@@ -318,7 +319,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <section title="Lacking Benefit of Signaling Validation State">
       <t>
         RTR has been developed to communicate validated payload information to routers.
-        BGP Attributes are not signed, and provide no assurance against third parties adding them, apart from BGP Communities--ideally--being filtered at a network edge.
+        BGP Path Attributes are not signed, and provide no assurance against third parties adding them, apart from BGP Communities--ideally--being filtered at a network edge.
         So, even in IBGP scenarios, their benefit in comparison to using RTR on all BGP speakers is limited.
       </t>
       <t>
@@ -333,7 +334,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   <section title="Advantages of Dissociating Validation States and BGP Path Attributes">
     <t>
-      As outlined in <xref target="signaling-risks"/>, signaling validation states through transitive attributes represents risks for the stability of the global routing ecosystem.
+      As outlined in <xref target="signaling-risks"/>, signaling validation states through BGP Path Attributes carried across EBGP sessions represents risks for the stability of the global routing ecosystem.
       Not signaling validation states, hence, has tangible benefits, specifically:
     </t>
     <ul spacing="normal">
@@ -352,10 +353,10 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <section anchor="guidance">
     <name>Guidance</name>
     <t>
-      Operators <bcp14>SHOULD NOT</bcp14> signal RPKI-derived validation states using transitive BGP attributes.
+      Operators <bcp14>SHOULD NOT</bcp14> signal RPKI-derived validation states using BGP Path Attributes carried across EBGP sessions.
     </t>
     <t>
-      The document acknowledges that specific operational requirements, such as a BGP implementation used by an operator still being dependent on annotating RPKI-derived validation states using BGP attributes, may necessitate the use of BGP path attributes to signal validation states between BGP speakers.
+      The document acknowledges that specific operational requirements, such as a BGP implementation used by an operator still being dependent on annotating RPKI-derived validation states using BGP Path Attributes, may necessitate the use of BGP path attributes to signal validation states between BGP speakers.
       If this is the case, the dependent operator <bcp14>MUST</bcp14> ensure that these attributes are removed before announcing Network Layer Reachability Information (NLRI) to EBGP neighbors.
       Depending on the supported functionality of the BGP implementations in use in a given AS, removal of the aforementioned attributes may not be consistently possible across the AS, leading to the conditions this document is intended to discuss.
     </t>
@@ -375,9 +376,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       Hence, any purported validation states contained in a received route announcement would only have significance in the sender's own local scope.
     </t>
     <t>
-      Additionally, the use of transitive attributes to signal RPKI-derived validation states may enable attackers to cause notable route churn.
-      This can be accomplished by an attacker issuing and withdrawing signed objects (e.g., ROAs for their prefixes), or by the attacker continuously altering transitive attributes used to signal RPKI-derived validation states for NLRI they re-advertise.
-      The latter is possible as NLRI contain no information allowing an ingesting party to validate the authenticity and integrity of the aforementioned transitive BGP attributes.
+      Additionally, the use of BGP Path Attributes carried across EBGP sessions to signal RPKI-derived validation states may enable attackers to cause notable route churn.
+      This can be accomplished by an attacker issuing and withdrawing signed objects (e.g., ROAs for their prefixes), or by the attacker continuously altering such attributes used to signal RPKI-derived validation states for NLRI they re-advertise.
+      The latter is possible as NLRI contain no information allowing an ingesting party to validate the authenticity and integrity of the aforementioned attributes.
     </t>
   </section>
 
