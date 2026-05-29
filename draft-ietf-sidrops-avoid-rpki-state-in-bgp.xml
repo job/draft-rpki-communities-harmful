@@ -319,14 +319,15 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <section title="Lacking Benefit of Signaling Validation State">
       <t>
         RTR has been developed to communicate validated payload information to routers.
-        BGP Path Attributes are not signed, and provide no assurance against third parties adding them, apart from BGP Communities--ideally--being filtered at a network edge.
-        So, even in IBGP scenarios, their benefit in comparison to using RTR on all BGP speakers is limited.
+        BGP Path Attributes are not signed, and provide no assurance against third parties adding them.
+        While BGP Communities might be filtered at a network edge, this does not fix the problem of BGP Paths being added in IBGP or EBGP.
+        In contrast, using the RTR provides direct information that can be used to secure BGP Path Attributes.
       </t>
       <t>
-        For EBGP, given they are not signed, they provide even less information to other parties except introspection into an ASes internal validation mechanics.
-        Crucially, they provide no actionable information for BGP neighbors.
-        If an AS validates and enforces based on RPKI, Invalid routes should never be imported and, hence, never be sent to neighbors.
-        Hence, the argument that exposing validation states through communities enables, for example, customers to filter RPKI Invalid routes is moot, as the only routes a customer should see are NotFound and Valid.
+        Given that BGP Path Attributes carried across external BGP sessions are not signed, they provide even less information to other parties except introspection into internal validation mechanics of an AS.
+        Crucially, such attributes provide no actionable information for external BGP neighbors.
+        If an AS validates and enforces based on RPKI (e.g., BGP Prefix Origin Validation), then <tt>Invalid</tt> routes would never be imported and, hence, never be sent to neighbors.
+        Hence, the argument that exposing validation states through, for example, BGP Communities enables customers to filter <tt>Invalid</tt> routes is moot, as the only routes a customer should see are <tt>NotFound</tt> and <tt>Valid</tt>.
       </t>
     </section>
 
