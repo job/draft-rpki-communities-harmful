@@ -150,7 +150,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         </t>
         <ul spacing="normal">
           <li>
-            When an operator issues new ROAs for their netblocks, possibly by issuing one ROA with a non-minimal maxLength (<xref target="RFC9582" section="4.3.2.2"/>) covering a large number of prefixes.
+            When an operator issues new ROAs for their IP address blocks, possibly by issuing one ROA with a non-minimal maxLength (<xref target="RFC9582" section="4.3.2.2"/>) covering a large number of prefixes.
             This may also occur when incorrectly migrating to minimally covering ROAs (<xref target="RFC9319"/>).
             One example of such a circumstance is when the previous ROA is first revoked (see <xref target="outage-roa-revocation"/>) and the new ROAs are only issued after this revocation has been propagated (due to an operational error or a bug in the issuance pipeline).
           </li>
@@ -172,7 +172,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         </t>
         <ul spacing="normal">
           <li>
-            When one large operator revokes all ROAs for their netblocks at once.
+            When one large operator revokes all ROAs for their IP address blocks at once.
             This can occur when migrating to minimally covering ROAs <xref target="RFC9319"/>, or when revoking one ROA with a long maxLength covering a large number of prefixes.
           </li>
           <li>
@@ -412,8 +412,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <contact fullname="Mohamed Boucadair"/>,
       <contact fullname="Scott Kelly"/>,
       <contact fullname="Susan Hares"/>,
+      <contact fullname="John Scudder"/>,
       and
-      <contact fullname="John Scudder"/>
+      <contact fullname="Gunter Van de Velde"/>
       for their helpful review of this document.
     </t>
 
