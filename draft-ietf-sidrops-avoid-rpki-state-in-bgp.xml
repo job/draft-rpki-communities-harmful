@@ -108,6 +108,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <t>
         The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <xref format="default" pageno="false" target="RFC2119"/> <xref format="default" pageno="false" target="RFC8174"/> when, and only when, they appear in all capitals, as shown here.
       </t>
+      <aside>
+        <t indent="0">Note that the key words are used to stress importance for operations; they are not required as a formal implementation requirement.</t>
+      </aside>
     </section>
   </section>
 
@@ -354,7 +357,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <section anchor="guidance">
     <name>Guidance</name>
     <t>
-      Operators <bcp14>SHOULD NOT</bcp14> signal RPKI-derived validation states using BGP Path Attributes carried across EBGP sessions.
+      Operators <bcp14>MUST NOT</bcp14> signal RPKI-derived validation states using BGP Path Attributes carried across EBGP sessions.
     </t>
     <t>
       The document acknowledges that specific operational requirements, such as a BGP implementation used by an operator still being dependent on annotating RPKI-derived validation states using BGP Path Attributes, may necessitate the use of BGP path attributes to signal validation states between BGP speakers.
@@ -403,8 +406,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <contact fullname="Luigi Iannone"/>,
       <contact fullname="Mohamed Boucadair"/>,
       <contact fullname="Scott Kelly"/>,
+      <contact fullname="Susan Hares"/>,
       and
-      <contact fullname="Susan Hares"/>
+      <contact fullname="John Scudder"/>
       for their helpful review of this document.
     </t>
 
