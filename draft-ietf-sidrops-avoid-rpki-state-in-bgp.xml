@@ -217,7 +217,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
             </li>
             <li>
               The cache may lose its network connectivity in general, or to specific CAs.
-              While, in general, the cache should be able to serve from cache, an operator may have to shutdown the cache in such a case, to prevent dropping prefixes as invalid due to stale data.
+              While, in general, the cache server should be able to temporarily operate from locally stored non-expired data, an operator may have to shutdown the cache in such a case, to prevent dropping prefixes as invalid due to stale data.
             </li>
           </ul>
         </section>
