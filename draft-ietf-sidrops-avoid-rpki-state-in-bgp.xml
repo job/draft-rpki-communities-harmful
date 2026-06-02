@@ -97,7 +97,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       Hence, this document provides guidance (<xref target="guidance"/>) to avoid carrying RPKI-derived validation states in Border Gateway Protocol (BGP) Path Attributes carried across external BGP sessions.
-      Specifically, Operators should not associate BGP Prefix Origin Validation results <xref target="RFC6811"/> with BGP routes using transitive BGP Communities (<xref target="RFC1997"/> BGP Communities, <xref target="RFC4360"/> transitive Extended Communities, <xref target="RFC8092"/> Large BGP Communities).
+      Specifically, Operators should not associate BGP Prefix Origin Validation results <xref target="RFC6811"/> with BGP routes using transitive BGP Communities (<xref target="RFC1997"/>, <xref target="RFC4360"/> transitive Extended Communities, <xref target="RFC8092"/> Large BGP Communities).
       Furthermore, this document contains data on the measured current impact of BGP Communities used to signal validation states.
     </t>
     <t>
