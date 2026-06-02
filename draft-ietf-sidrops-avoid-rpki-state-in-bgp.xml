@@ -213,7 +213,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
             </li>
             <li>
               Validation state may lapse due to issues with time synchronization.
-              An example of problems with time synchronization is if the clock of the cache diverts significantly, causing certificates to be considered invalid.
+              An example of problems with time synchronization is if the clock of the cache drifts significantly, causing certificates to be considered invalid.
             </li>
             <li>
               The cache may lose its network connectivity in general, or to specific CAs.
