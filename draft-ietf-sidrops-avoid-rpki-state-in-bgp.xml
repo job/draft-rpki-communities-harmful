@@ -114,7 +114,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <xref format="default" pageno="false" target="RFC2119"/> <xref format="default" pageno="false" target="RFC8174"/> when, and only when, they appear in all capitals, as shown here.
       </t>
       <aside>
-        <t indent="0">Note that the key words are used to stress importance for operations; they are not required as a formal implementation requirement.</t>
+        <t indent="0">Note that the key words are used to stress importance for operations; they are not a formal implementation requirement.</t>
       </aside>
     </section>
   </section>
