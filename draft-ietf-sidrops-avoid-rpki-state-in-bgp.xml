@@ -139,7 +139,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <t>
       In addition to implementation guidance in <xref format="default" pageno="false" target="RFC8097"/>, the document also provides non-normative text on possible deployment scenarios where RPKI-derived state might be signaled to EBGP speakers.
       In that regard, this documment updates <xref format="default" pageno="false" target="RFC8097"/>, adding normative language that these deployment scenarios are <bcp14>NOT RECOMMENDED</bcp14>.
-      Operators <bcp14>MAY</bcp14> opt to deploy such configurations in restricted environments, e.g., when using multiple ASNs in a single administrative domain;
+      Operators <bcp14>MAY</bcp14> opt to deploy such configurations in restricted environments, e.g., when using multiple ASes in a single administrative domain;
       Nevertheless, operators are encouraged to take care and precautions to mitigate the risks described in this document when choosing to implement these scenarios.
     </t>
   </section>
