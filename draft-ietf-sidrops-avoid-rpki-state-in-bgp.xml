@@ -323,6 +323,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         Such a high percentage of unnecessary BGP UPDATE messages constitutes a considerable level of noise, impacting the capacity of the global routing system while generating load on router CPUs and occupying more RAM than necessary.
         Containing this information within the administrative boundaries of a single AS helps reduce the burden on the rest of the global routing platform, reducing workload and noise.
       </t>
+      <t>
+        Please note that this data stems from a point-in-time measurement and may be subject to change in the future.
+      </t>
     </section>
     <section title="Lacking Benefit of Signaling Validation State">
       <t>
