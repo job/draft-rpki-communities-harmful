@@ -355,6 +355,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       </li>
       <li>
         Avoids having to resend, e.g., more than 500,000 BGP routes towards BGP neighbors (for the own customer cone towards peers and providers, for the full table towards customers) if the RPKI cache crashes and RTR sessions are terminated, or if flaps in validation are caused by other events.
+        This corresponds to point-in-time data as of mid-2026, based on the current global IPv4 routing table size of around 1,000,000 prefixes, of which roughly half are signed.
       </li>
     </ul>
   </section>
