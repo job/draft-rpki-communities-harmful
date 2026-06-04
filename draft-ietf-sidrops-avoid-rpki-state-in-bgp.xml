@@ -351,7 +351,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         Reduction of memory consumption on customer/peer facing PE routers (less BGP communities == less memory pressure).
       </li>
       <li>
-        No effect on the age of a BGP route when a ROA or ASPA <xref target="I-D.ietf-sidrops-aspa-profile"/> is issued or revoked.
+        No effect on the age of a BGP route when a ROA or ASPA is issued or revoked.
       </li>
       <li>
         Avoids having to resend, e.g., more than 500,000 BGP routes towards BGP neighbors (for the own customer cone towards peers and providers, for the full table towards customers) if the RPKI cache crashes and RTR sessions are terminated, or if flaps in validation are caused by other events.
