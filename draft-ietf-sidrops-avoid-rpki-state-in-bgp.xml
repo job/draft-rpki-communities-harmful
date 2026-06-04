@@ -263,7 +263,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       <t>
         In the case of BGP Prefix Origin Validation (<xref target="RFC6811"/>), for each change in the validation state of a route, an Autonomous System (AS) in which the local routing policy sets a BGP Community based on the validation state, routers would need to send BGP UPDATE messages for more than half of the global Internet routing table if the validation state changes to <tt>NotFound</tt>.
         The same, reversed case, would be true for every new ROA created by the address space holders, whereas a new BGP UPDATE would be generated, as the validation state would change to <tt>Valid</tt>.
-        Similar scaling concerns apply to other RPKI-derived validation mechanisms, such as ASPA verification (<xref target="I-D.ietf-sidrops-aspa-verification"/>) and SPL Verification (<xref target="I-D.ietf-sidrops-spl-verification"/>).
+        Similar scaling concerns apply to other RPKI-derived validation mechanisms, as, for example, ASPA verification (<xref target="I-D.ietf-sidrops-aspa-verification"/>).
       </t>
       <t>
         Furthermore, adding additional attributes to routes increases their size and memory consumption in the Routing Information Base of BGP routers.
@@ -441,7 +441,6 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9582.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-sidrops-aspa-profile.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-sidrops-aspa-verification.xml"/>
-    <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-sidrops-spl-verification.xml"/>
 
     <reference anchor="How-to-break" target="https://cds.cern.ch/record/2805326">
       <front>
