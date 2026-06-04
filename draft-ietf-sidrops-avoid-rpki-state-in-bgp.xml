@@ -102,6 +102,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         <li>BGP Communities <xref target="RFC1997"/>,</li>
         <li>transitive BGP Extended Communities <xref target="RFC4360"/>,</li>
         <li>BGP Large Communities <xref target="RFC8092"/></li>
+        <li>IPv6 Address Specific BGP Extended Community Attribute <xref target="RFC5701"/></li>
       </ul>
       Furthermore, this document contains data on the measured current impact of BGP Communities used to signal validation states.
     </t>
@@ -428,6 +429,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4271.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4360.xml"/>
+    <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5701.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6480.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6811.xml"/>
     <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8092.xml"/>
