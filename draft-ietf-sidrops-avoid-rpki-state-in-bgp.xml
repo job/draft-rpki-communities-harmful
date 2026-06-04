@@ -336,6 +336,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         Such a high percentage of unnecessary BGP UPDATE messages constitutes a considerable level of noise, impacting the capacity of the global routing system while generating load on router CPUs and occupying more RAM than necessary.
         Containing this information within the administrative boundaries of a single AS helps reduce the burden on the rest of the global routing platform, reducing workload and noise.
       </t>
+      <t>
+        Please note that this data stems from a point-in-time measurement and may be subject to change in the future.
+      </t>
     </section>
     <section title="Lacking Benefit of Signaling Validation State">
       <t>
@@ -368,6 +371,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       </li>
       <li>
         Avoids having to resend, e.g., more than 500,000 BGP routes towards BGP neighbors (for the own customer cone towards peers and providers, for the full table towards customers) if the RPKI cache crashes and RTR sessions are terminated, or if flaps in validation are caused by other events.
+        This corresponds to point-in-time data as of mid-2026, based on the current global IPv4 routing table size of around 1,000,000 prefixes, of which roughly half are covered by ROAs.
       </li>
     </ul>
   </section>
@@ -378,7 +382,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       Operators <bcp14>MUST NOT</bcp14> signal RPKI-derived validation states using BGP Path Attributes carried across EBGP sessions.
     </t>
     <t>
-      The document acknowledges that specific operational requirements, such as a BGP implementation used by an operator still being dependent on annotating RPKI-derived validation states using BGP Path Attributes, may necessitate the use of BGP path attributes to signal validation states between BGP speakers.
+      The document acknowledges that specific operational requirements, such as a BGP implementation used by an operator still being dependent on annotating RPKI-derived validation states using BGP Path Attributes, may necessitate the use of BGP path attributes to signal validation states between iBGP speakers within the same AS.
       If this is the case, the dependent operator <bcp14>MUST</bcp14> ensure that these attributes are removed before announcing Network Layer Reachability Information (NLRI) to EBGP neighbors.
       Depending on the supported functionality of the BGP implementations in use in a given AS, removal of the aforementioned attributes may not be consistently possible across the AS, leading to the conditions this document is intended to discuss.
     </t>
