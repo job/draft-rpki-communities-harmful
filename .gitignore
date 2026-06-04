@@ -1,0 +1,9 @@
+# Files after make
+draft-ietf-sidrops-avoid-rpki-state-in-bgp.html
+draft-ietf-sidrops-avoid-rpki-state-in-bgp.txt
+
+# vim swp files
+*.swp
+
+# "some other editor" swap files
+*~
