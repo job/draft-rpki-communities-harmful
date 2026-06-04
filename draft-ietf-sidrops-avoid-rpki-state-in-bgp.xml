@@ -373,8 +373,8 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         No effect on the age of a BGP route when a ROA or ASPA is issued or revoked.
       </li>
       <li>
-        Avoids having to resend, e.g., more than 800,000 BGP routes towards BGP neighbors (for the own customer cone towards peers and providers, for the full table towards customers) if the RPKI cache crashes and RTR sessions are terminated, or if flaps in validation are caused by other events.
-        This corresponds to point-in-time data as of mid-2026, based on the current global Internet routing table size of around 1,300,000 prefixes, of which roughly 65% is covered by ROAs.
+        Avoids having to resend, e.g., more than 850,000 BGP routes towards BGP neighbors (for the own customer cone towards peers and providers, for the full table towards customers) if the RPKI cache crashes and RTR sessions are terminated, or if flaps in validation are caused by other events.
+        This corresponds to point-in-time IPv4/IPv6 combined data as of mid-2026, based on the current global Internet routing table size of around 1,300,000 prefixes, of which roughly 65% is covered by ROAs.
       </li>
     </ul>
   </section>
