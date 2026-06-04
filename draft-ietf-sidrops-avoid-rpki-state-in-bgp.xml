@@ -133,7 +133,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       <xref format="default" pageno="false" target="RFC8097"/> introduces an extended community for use in iBGP and selected eBGP scenarios, providing normative guidance on implementations' behavior if and only if support for this feature is explicitly configured.
-      This document does not provide normative guidance regarding implementation behavavior, i.e., regarding the support for the extended community for signalling validation state described in  <xref format="default" pageno="false" target="RFC8097"/>.
+      This document does not provide normative guidance regarding implementation behavavior, i.e., regarding the support for the extended community for signaling validation state described in  <xref format="default" pageno="false" target="RFC8097"/>.
       Instead, guidance in this document is normative regarding operators' use of this feature.
     </t>
     <t>
