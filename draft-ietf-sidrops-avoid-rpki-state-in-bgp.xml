@@ -74,6 +74,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       Operators should ensure RPKI-derived validation states are not signaled in BGP Path Attributes whose change triggers a BGP UPDATE being sent across external BGP sessions.
       Specifically, operators should not associate Prefix Origin Validation state with BGP routes using any form of BGP Communities carried across EBGP session.
     </t>
+    <t>
+      This document updates RFC 8097.
+    </t>
   </abstract>
   
 </front>
