@@ -11,4 +11,4 @@ www:
 
 # Requires codespell to be locally available
 spellcheck:
-	codespell -I .ignore-wrods $(NAME).xml
+	codespell -I .ignore-words $(NAME).xml
