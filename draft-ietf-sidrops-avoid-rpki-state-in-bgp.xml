@@ -382,7 +382,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
   <section anchor="guidance">
     <name>Guidance</name>
     <t>
-      Operators <bcp14>MUST NOT</bcp14> signal RPKI-derived validation states using BGP Path Attributes carried across EBGP sessions, except in restricted environments as described in <xref target="scope">.
+      Operators <bcp14>MUST NOT</bcp14> signal RPKI-derived validation states using BGP Path Attributes carried across EBGP sessions, except in restricted environments as described in <xref target="scope"/>.
     </t>
     <t>
       The document acknowledges that specific operational requirements, such as a BGP implementation used by an operator still being dependent on annotating RPKI-derived validation states using BGP Path Attributes, may necessitate the use of BGP path attributes to signal validation states between iBGP speakers within the same AS.
