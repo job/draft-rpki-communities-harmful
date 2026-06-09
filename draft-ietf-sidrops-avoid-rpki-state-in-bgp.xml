@@ -12,7 +12,6 @@
    xmlns:xi="http://www.w3.org/2001/XInclude"
    category="bcp"
    consensus="true"
-   updates="8097"
    submissionType="IETF"
    docName="draft-ietf-sidrops-avoid-rpki-state-in-bgp-09"
    ipr="trust200902">
