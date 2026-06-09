@@ -100,7 +100,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       Specifically, operators should not associate BGP Prefix Origin Validation results <xref target="RFC6811"/> with BGP routes using community or community-like attributes, including:
       <ul>
         <li>BGP Communities <xref target="RFC1997"/>,</li>
-        <li>transitive BGP Extended Communities <xref target="RFC4360"/>,</li>
+        <li>BGP Extended Communities <xref target="RFC4360"/>,</li>
         <li>BGP Large Communities <xref target="RFC8092"/></li>
         <li>IPv6 Address Specific BGP Extended Community Attribute <xref target="RFC5701"/></li>
       </ul>
@@ -135,9 +135,9 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
   </section>
 
-  <section title="Risks of Signaling Validation State Transitively to EBGP Neighbors" anchor="signaling-risks">
+  <section title="Risks of Signaling Validation State to EBGP Neighbors" anchor="signaling-risks">
     <t>
-      This section outlines the risks of signaling RPKI-derived validation states using transitive BGP Communities.
+      This section outlines the risks of signaling RPKI-derived validation states using BGP Communities.
       While the current description is specific to BGP communities, the observations hold similar for all attributes that may be added to BGP routes and propagated to EBGP neighbors.
     </t>
     <section title="Triggers for Large-Scale Validation Changes" anchor="outage">
