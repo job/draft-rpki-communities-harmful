@@ -134,15 +134,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       Similarly, this guidance also applies to non-ROA validation mechanics based on RPKI; e.g., Autonomous System Provider Authorization (ASPA) <xref target="I-D.ietf-sidrops-aspa-profile"/>, BGPsec <xref target="RFC8205"/>, and any other future validation mechanic built upon the RPKI.
     </t>
     <t>
-      <xref format="default" pageno="false" target="RFC8097"/> introduces an extended community for use in IBGP and selected EBGP scenarios, providing normative guidance on implementations' behavior if and only if support for this feature is explicitly configured.
-      This document does not provide normative guidance regarding implementation behavavior, i.e., regarding the support for the extended community for signaling validation state described in  <xref format="default" pageno="false" target="RFC8097"/>.
-      Instead, guidance in this document is normative regarding operators' use of this feature.
-    </t>
-    <t>
-      In addition to implementation guidance in <xref format="default" pageno="false" target="RFC8097"/>, the document also provides non-normative text on possible deployment scenarios where RPKI-derived state might be signaled to EBGP speakers.
-      In that regard, this documment updates <xref format="default" pageno="false" target="RFC8097"/>, adding normative language that these deployment scenarios are <bcp14>NOT RECOMMENDED</bcp14>.
-      Operators <bcp14>MAY</bcp14> opt to deploy such configurations in restricted environments, e.g., when using multiple ASes in a single administrative domain;
-      Nevertheless, operators are encouraged to take care and precautions to mitigate the risks described in this document when choosing to implement these scenarios.
+      The term EBGP refers to a BGP session between different administrative domains. In deployment scenarios where an EBGP session is between ASes within a single administrative domain, it can be considered "internal" when interpreting this document's guidance.
     </t>
   </section>
 
