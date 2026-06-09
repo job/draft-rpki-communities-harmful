@@ -376,7 +376,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       Operators <bcp14>MUST NOT</bcp14> signal RPKI-derived validation states using BGP Path Attributes carried across administrative boundaries (usually EBGP sessions).
     </t>
     <t>
-      The document acknowledges that specific operational requirements, such as a BGP implementation used by an operator still being dependent on annotating RPKI-derived validation states using BGP Path Attributes, may necessitate the use of BGP path attributes to signal validation states between iBGP speakers within the same AS.
+      The document acknowledges that specific operational requirements, such as a BGP implementation used by an operator still depending on annotating RPKI-derived validation states using BGP Path Attributes, may necessitate using BGP path attributes (e.g., <xref target="RFC9319"/>) to signal validation states between IBGP speakers within the same AS.
       If this is the case, the dependent operator <bcp14>MUST</bcp14> ensure that these attributes are removed before announcing Network Layer Reachability Information (NLRI) to EBGP neighbors.
       Depending on the supported functionality of the BGP implementations in use in a given AS, removal of the aforementioned attributes may not be consistently possible across the AS, leading to the conditions this document is intended to discuss.
     </t>
