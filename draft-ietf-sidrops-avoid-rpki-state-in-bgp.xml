@@ -127,7 +127,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     <t>
       This document discusses signaling locally significant RPKI validation states through BGP Path Attributes whose change leads to BGP UPDATES being sent to EBGP neighbors.
       This includes operator-specific BGP Communities to signal validation states, as well as any current or future standardized well-known BGP Communities denoting validation states.
-      As BGP message churn is associated with internal signaling changes, it is <bcp14>RECOMMENDED</bcp14> that operators also consider the guidance (<xref target="guidance"/>) within their network, i.e., between their IBGP speakers.
+      As BGP message churn is associated with internal signaling changes, operators <bcp14>MAY</bcp14> also consider the guidance (<xref target="guidance"/>) within their network, i.e., between their IBGP speakers.
     </t>
     <t>
       The guidance in this document applies to all current and future BGP Path Attributes that may be implicitly or explicitly used to signal validation states to EBGP neighbors.
