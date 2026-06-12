@@ -13,16 +13,11 @@
    category="bcp"
    consensus="true"
    submissionType="IETF"
-   docName="draft-ietf-sidrops-avoid-rpki-state-in-bgp-09"
+   docName="draft-ietf-sidrops-avoid-rpki-state-in-bgp-11"
    ipr="trust200902">
-<!-- For consideration: updates="7115" -->
   
 <front>
 
-<!-- sources:
-https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
--->
-    
   <title abbrev="Avoid RPKI State in BGP">Guidance to Avoid Carrying RPKI Validation States in BGP Path Attributes</title>
 
   <author fullname="Job Snijders" initials="J." surname="Snijders">
