@@ -8,3 +8,7 @@ clean:
 
 www:
 	cp $(NAME).xml $(NAME).html $(NAME).txt ~/Downloads/
+
+# Requires codespell to be locally available
+spellcheck:
+	codespell -I .ignore-words $(NAME).xml
