@@ -15,7 +15,7 @@
    submissionType="IETF"
    docName="draft-ietf-sidrops-avoid-rpki-state-in-bgp-11"
    ipr="trust200902">
-  
+
 <front>
 
   <title abbrev="Avoid RPKI State in BGP">Guidance to Avoid Carrying RPKI Validation States in BGP Path Attributes</title>
@@ -46,7 +46,7 @@
       <email>tobias@internet.wien</email>
     </address>
   </author>
-  
+
   <author fullname="Massimiliano Stucchi" initials="M. A." surname="Stucchi">
     <organization>Glevia GmbH</organization>
     <address>
@@ -69,21 +69,21 @@
       Specifically, operators should not associate Prefix Origin Validation state with BGP routes using any form of BGP Communities carried across EBGP session.
     </t>
   </abstract>
-  
+
 </front>
 
 <middle>
-  
+
   <section title="Introduction">
 
     <t>
-      The Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> allows for validation of received Border Gateway Protocol (BGP) <xref target="RFC4271"/> routes.  
+      The Resource Public Key Infrastructure (RPKI) <xref target="RFC6480"/> allows for validation of received BGP <xref target="RFC4271"/> routes.
       By means of a validation process, e.g., BGP Prefix Origin Validation (<xref target="RFC6811"/>), routers attain locally significant validation states.
     </t>
     <t>
       In the past, some operators and vendors suggested to use BGP Communities (<xref target="RFC1997"/> and <xref target="RFC8092"/>) to annotate received routes with validation states local to a router.
       Some claim that the practice of signaling validation states could be useful, for example, to Internal BGP (IBGP) speakers (e.g., using <xref target="RFC8097"/>), in order to avoid each IBGP speaker having to perform their own route origin validation.
-      However, such a practice not only conflicts with core concepts of RPKI but also threatens the stability of networks when those states leak through to External BGP (EBGP) speakers.
+      However, such a practice not only conflicts with core concepts of RPKI but also threatens the stability of networks when those states leak through to EBGP speakers.
     </t>
     <t>
       Annotating a route with a BGP Path Attribute carried across EBGP session (based on validation states) means that BGP UPDATE messages have to be sent to every neighbor when the aforementioned validation states changes.
@@ -104,15 +104,18 @@
     <t>
       Avoiding the use of BGP Communities to signal RPKI-derived validation states prevents BGP UPDATE messages from being flooded into the global Internet routing system.
     </t>
+  </section>
 
-    <section title="Requirements Language">
-      <t>
-        The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <xref format="default" pageno="false" target="RFC2119"/> <xref format="default" pageno="false" target="RFC8174"/> when, and only when, they appear in all capitals, as shown here.
-      </t>
-      <aside>
-        <t indent="0">Note that the key words are used to stress importance for operations; they are not a formal implementation requirement.</t>
-      </aside>
-    </section>
+  <section title="Terminology">
+    <t>
+      The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <xref format="default" pageno="false" target="RFC2119"/> <xref format="default" pageno="false" target="RFC8174"/> when, and only when, they appear in all capitals, as shown here.
+    </t>
+    <aside>
+      <t indent="0">Note that the key words are used to stress importance for operations; they are not a formal implementation requirement.</t>
+    </aside>
+    <t>
+      In this document, the term EBGP refers to a BGP session between different administrative domains.
+    </t>
   </section>
 
   <section title="Scope" anchor="scope">
@@ -122,11 +125,10 @@
     </t>
     <t>
       The guidance in this document applies to all current and future BGP Path Attributes that may be implicitly or explicitly used to signal validation states to EBGP neighbors.
-      Similarly, this guidance also applies to non-ROA validation mechanics based on RPKI; e.g., Autonomous System Provider Authorization (ASPA) <xref target="I-D.ietf-sidrops-aspa-profile"/>, BGPsec <xref target="RFC8205"/>, and any other future validation mechanic built upon the RPKI.
+      Similarly, this guidance also applies to non-ROA validation mechanics based on RPKI (e.g., Autonomous System Provider Authorization (ASPA) <xref target="I-D.ietf-sidrops-aspa-profile"/>, BGPsec <xref target="RFC8205"/>), and any other future validation mechanic built upon the RPKI.
     </t>
     <t>
-      In this document, the term EBGP refers to a BGP session between different administrative domains.
-      In deployment scenarios where an EBGP session is between ASes within a single administrative domain, it can be considered "internal" when interpreting this document's guidance.
+      In deployment scenarios where an EBGP session is between Autonomous Systems (ASes) within a single administrative domain, the session can be considered "internal" when interpreting this document's guidance.
     </t>
   </section>
 
@@ -260,7 +262,7 @@
 
     <section title="Scaling issues">
       <t>
-        In the case of BGP Prefix Origin Validation (<xref target="RFC6811"/>), for each change in the validation state of a route, an Autonomous System (AS) in which the local routing policy sets a BGP Community based on the validation state, routers would need to send BGP UPDATE messages for more than half of the global Internet routing table if the validation state changes to <tt>NotFound</tt>.
+        In the case of BGP Prefix Origin Validation (<xref target="RFC6811"/>), for each change in the validation state of a route, an AS in which the local routing policy sets a BGP Community based on the validation state, routers would need to send BGP UPDATE messages for more than half of the global Internet routing table if the validation state changes to <tt>NotFound</tt>.
         The same, reversed case, would be true for every new ROA created by the address space holders, whereas a new BGP UPDATE would be generated, as the validation state would change to <tt>Valid</tt>.
         Similar scaling concerns apply to other RPKI-derived validation mechanisms, as, for example, ASPA verification (<xref target="I-D.ietf-sidrops-aspa-verification"/>).
       </t>
@@ -368,7 +370,7 @@
       Operators <bcp14>MUST NOT</bcp14> signal RPKI-derived validation states using BGP Path Attributes carried over EBGP sessions across administrative boundaries.
     </t>
     <t>
-      The document acknowledges that specific operational requirements, such as a BGP implementation used by an operator still depending on annotating RPKI-derived validation states using BGP Path Attributes, may necessitate using BGP path attributes (e.g., <xref target="RFC8097"/>) to signal validation states between IBGP speakers within the same AS.
+      The document acknowledges that specific operational requirements, such as a BGP implementation used by an operator still depending on annotating RPKI-derived validation states using BGP Path Attributes, may necessitate using BGP path attributes to signal validation states between IBGP speakers within the same AS.
       If this is the case, the dependent operator <bcp14>MUST</bcp14> ensure that these attributes are removed before announcing Network Layer Reachability Information (NLRI) to EBGP neighbors.
       Depending on the supported functionality of the BGP implementations in use in a given AS, removal of the aforementioned attributes may not be consistently possible across the AS, leading to the conditions this document is intended to discuss.
     </t>
