@@ -87,8 +87,8 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
     </t>
     <t>
       In the past, some operators and vendors suggested to use BGP Communities (<xref target="RFC1997"/> and <xref target="RFC8092"/>) to annotate received routes with validation states local to a router.
-      Some claim that the practice of signaling validation states could be useful, for example to Internal BGP (IBGP) speakers, in order to avoid each IBGP speaker having to perform their own route origin validation.
-      However, such a practice does not only conflict with core concepts of RPKI, but also threatens the stability of networks.
+      Some claim that the practice of signaling validation states could be useful, for example, to Internal BGP (IBGP) speakers (e.g., using <xref target="RFC8097"/>), in order to avoid each IBGP speaker having to perform their own route origin validation.
+      However, such a practice not only conflicts with core concepts of RPKI but also threatens the stability of networks when those states leak through to External BGP (EBGP) speakers.
     </t>
     <t>
       Annotating a route with a BGP Path Attribute carried across EBGP session (based on validation states) means that BGP UPDATE messages have to be sent to every neighbor when the aforementioned validation states changes.
