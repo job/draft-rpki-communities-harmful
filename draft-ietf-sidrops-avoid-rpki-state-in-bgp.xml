@@ -66,11 +66,11 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
 
   <abstract>
     <t>
-      This document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) derived validation states in Border Gateway Protocol (BGP) Path Attributes whose change triggers a BGP UPDATE being sent across external BGP sessions.
-      Annotating routes with BGP Path Attributes carried across external BGP sessions signaling validation states may cause needless flooding of BGP UPDATE messages through the global Internet routing system, for example when Route Origin Authorizations (ROAs) are issued, or are revoked, or when RPKI-To-Router sessions are terminated.
+      This document provides guidance to avoid carrying Resource Public Key Infrastructure (RPKI) derived validation states in Border Gateway Protocol (BGP) Path Attributes whose change triggers a BGP UPDATE being sent across external BGP (EBGP) sessions.
+      Annotating routes with BGP Path Attributes carried across EBGP sessions signaling validation states may cause needless flooding of BGP UPDATE messages through the global Internet routing system, for example when Route Origin Authorizations (ROAs) are issued, or are revoked, or when RPKI-To-Router sessions are terminated.
     </t>
     <t>
-      Operators should ensure RPKI-derived validation states are not signaled in BGP Path Attributes whose change triggers a BGP UPDATE being sent across external BGP sessions.
+      Operators should ensure RPKI-derived validation states are not signaled in BGP Path Attributes whose change triggers a BGP UPDATE being sent across EBGP sessions.
       Specifically, operators should not associate Prefix Origin Validation state with BGP routes using any form of BGP Communities carried across EBGP session.
     </t>
   </abstract>
@@ -96,7 +96,7 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
       Furthermore, given that many BGP Communities are carried across EBGP sessions, such a BGP UPDATE might end up propagating through large portions of the Default-Free Zone (DFZ).
     </t>
     <t>
-      Hence, this document provides guidance (<xref target="guidance"/>) to avoid carrying RPKI-derived validation states in Border Gateway Protocol (BGP) Path Attributes carried across external BGP sessions.
+      Hence, this document provides guidance (<xref target="guidance"/>) to avoid carrying RPKI-derived validation states in Border Gateway Protocol (BGP) Path Attributes carried across EBGP sessions.
       Specifically, operators should not associate BGP Prefix Origin Validation results <xref target="RFC6811"/> with BGP routes using community or community-like attributes, including:
       <ul>
         <li>BGP Communities <xref target="RFC1997"/>,</li>
@@ -339,8 +339,8 @@ https://mailarchive.ietf.org/arch/msg/sidrops/YV1WfoxQNiwfOjtKIY1d6YJjRxM/
         In contrast, using the RTR provides direct information that can be used to secure BGP Path Attributes.
       </t>
       <t>
-        Given that BGP Path Attributes carried across external BGP sessions are not signed, they provide even less information to other parties except introspection into internal validation mechanics of an AS.
-        Crucially, such attributes provide no actionable information for external BGP neighbors.
+        Given that BGP Path Attributes carried across EBGP sessions are not signed, they provide even less information to other parties except introspection into internal validation mechanics of an AS.
+        Crucially, such attributes provide no actionable information for EBGP neighbors.
         If an AS validates and enforces based on RPKI (e.g., BGP Prefix Origin Validation), then <tt>Invalid</tt> routes would never be imported and, hence, never be sent to neighbors.
         Hence, the argument that exposing validation states through, for example, BGP Communities enables customers to filter <tt>Invalid</tt> routes is moot, as the only routes a customer should see are <tt>NotFound</tt> and <tt>Valid</tt>.
       </t>
