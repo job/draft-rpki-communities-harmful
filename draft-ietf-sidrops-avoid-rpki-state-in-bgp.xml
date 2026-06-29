@@ -13,7 +13,7 @@
    category="bcp"
    consensus="true"
    submissionType="IETF"
-   docName="draft-ietf-sidrops-avoid-rpki-state-in-bgp-11"
+   docName="draft-ietf-sidrops-avoid-rpki-state-in-bgp-12"
    ipr="trust200902">
 
 <front>
@@ -86,7 +86,7 @@
       However, such a practice not only conflicts with core concepts of RPKI but also threatens the stability of networks when those states leak through to EBGP speakers.
     </t>
     <t>
-      Annotating a route with a BGP Path Attribute carried across EBGP session (based on validation states) means that BGP UPDATE messages have to be sent to every neighbor when the aforementioned validation states changes.
+      Annotating a route with a BGP Path Attribute carried across an EBGP session (based on validation states) means that BGP UPDATE messages have to be sent to every neighbor when the aforementioned validation states changes.
       This means that when, for example, Route Origin Authorizations (ROAs) <xref target="RFC9582"/> are issued, or are revoked, or RPKI-To-Router (RTR) <xref target="RFC8210"/> sessions are terminated, new BGP UPDATE messages will have to be sent for all routes that were previously annotated with a BGP Community associated with a different validation state.
       Furthermore, given that many BGP Communities are carried across EBGP sessions, such a BGP UPDATE might end up propagating through large portions of the Default-Free Zone (DFZ).
     </t>
@@ -135,11 +135,11 @@
   <section title="Risks of Signaling Validation State to EBGP Neighbors" anchor="signaling-risks">
     <t>
       This section outlines the risks of signaling RPKI-derived validation states using BGP Communities.
-      While the current description is specific to BGP communities, the observations hold similar for all attributes that may be added to BGP routes and propagated to EBGP neighbors.
+      While the current description is specific to BGP Communities, the observations hold in a similar way for all attributes that may be added to BGP routes and propagated to EBGP neighbors.
     </t>
     <section title="Triggers for Large-Scale Validation Changes" anchor="outage">
       <t>
-        This section describes examples on how a large amount of RPKI ROA changes may occur in a short time, leading to generation of a large amounts of BGP UPDATE messages.
+        This section describes examples on how a large amount of RPKI ROA changes may occur in a short time, leading to generation of large amounts of BGP UPDATE messages.
       </t>
       <section title="ROA Issuance" anchor="outage-roa-issuance">
         <t>
@@ -166,7 +166,7 @@
       <section title="ROA Revocation" anchor="outage-roa-revocation">
         <t>
           Large-Scale ROA revocation should be a comparatively rare event for individual networks.
-          However, several cases exist where revocations by individual operators or (malicious) coordinated revocation of ROAs by multiple operators may lead to a high route churn triggering a continuous flow of BGP Update messages caused by operators to signal validation states using BGP Path Attributes carried across EBGP sessions.
+          However, several cases exist where revocations by individual operators or (malicious) coordinated revocation of ROAs by multiple operators may lead to a high route churn triggering a continuous flow of BGP Update messages caused by operators signalling validation states using BGP Path Attributes carried across EBGP sessions.
         </t>
         <t>
           Specifically:
@@ -281,7 +281,7 @@
       <section title="Flooding of BGP UPDATE Messages" anchor="flooding">
         <t>
           Flooding events are caused by an individual operator losing validation states.
-          If that operator annotates validation states using BGP communities, the AS will send updates for all routes that changed from <tt>Valid</tt> to <tt>NotFound</tt> to its customers, as well as updates for routes received from customers to its providers.
+          If that operator annotates validation states using BGP Communities, the AS will send updates for all routes that changed from <tt>Valid</tt> to <tt>NotFound</tt> to its customers, as well as updates for routes received from customers to its providers.
         </t>
         <t>
           Following an RPKI service affecting <xref target="outage">outage</xref>, given that, at the time of writing, more than half the global Internet routing table <xref target="CIDR Report"/> nowadays is covered by RPKI ROAs <xref target="NIST"/>, such convergence events represent a significant burden.
@@ -291,7 +291,7 @@
 
       <section title="Cascading of BGP UPDATE Messages" anchor="cascade">
         <t>
-          Some events that are not specific to one operator can also cascade for ASes annotating validation states using BGP communities.
+          Some events that are not specific to one operator can also cascade for ASes annotating validation states using BGP Communities.
           These events might include a malicious withdrawal of a ROA, loss of a major CA, or an unexpected downtime of a major centralized RTR service.
           Given that routers' view of the RPKI with RTR are only loosely consistent, BGP UPDATE messages may cascade - so that one event affecting validation states may actually trigger multiple subsequent BGP UPDATE floods.
         </t>
@@ -352,7 +352,7 @@
     </t>
     <ul spacing="normal">
       <li>
-        Reduction of memory consumption on customer/peer facing PE routers (less BGP communities == less memory pressure).
+        Reduction of memory consumption on customer/peer facing PE routers (less BGP Communities == less memory pressure).
       </li>
       <li>
         No effect on the age of a BGP route when a ROA or ASPA is issued or revoked.
@@ -421,8 +421,9 @@
       <contact fullname="Gunter Van de Velde"/>,
       <contact fullname="Donald Sharp"/>,
       <contact fullname="Mahesh Jethanandani"/>,
+      <contact fullname="Ketan Talaulikar"/>,
       and
-      <contact fullname="Ketan Talaulikar"/>
+      <contact fullname="Henry Thompson"/>
       for their helpful review of this document.
     </t>
 
